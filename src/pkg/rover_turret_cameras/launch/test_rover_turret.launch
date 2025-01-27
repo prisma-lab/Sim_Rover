@@ -1,0 +1,80 @@
+<launch>
+    <node name="left_cam" pkg="usb_cam" type="usb_cam_node">
+        <param name="video_device" value="/dev/video10" />
+        <param name="framerate" value="5"/>
+        <param name="image_width" value="2048" />
+        <param name="image_height" value="1536" />
+        <param name="camera_frame_id" value="left_cam" />
+        <param name="io_method" value="mmap"/>
+        <!--<param name="camera_info_url" value="package://rover_turret_cameras/left_cam_calib/ost.yaml"/>-->
+    </node>
+<!--
+    <node name="right_cam" pkg="usb_cam" type="usb_cam_node">
+        <param name="video_device" value="/dev/video2" />
+        <param name="framerate" value="5"/>
+        <param name="image_width" value="2048" />
+        <param name="image_height" value="1536" />
+        <param name="camera_frame_id" value="right_cam" />
+        <param name="io_method" value="mmap"/>
+        <param name="camera_info_url" value="package://rover_turret_cameras/right_cam_calib/ost.yaml"/>
+    </node>
+
+    <node name="back_cam" pkg="usb_cam" type="usb_cam_node">
+        <param name="video_device" value="/dev/video0" />
+        <param name="framerate" value="5"/>
+        <param name="image_width" value="2048" />
+        <param name="image_height" value="1536" />
+        <param name="camera_frame_id" value="back_cam" />
+        <param name="io_method" value="mmap"/>
+        <param name="camera_info_url" value="package://rover_turret_cameras/back_cam_calib/ost.yaml"/>
+    </node>
+-->    
+    <!-- ADD DASHES TO size AND square ARGS!! -->
+    <!--<node name="camera_calib" pkg="camera_calibration" type="cameracalibrator.py" args="
+        size 9x6 
+        square 0.04628 
+        image:=/back_cam/image_raw 
+        camera:=/back_cam"/> -->
+<!--
+    <node pkg="tf" type="static_transform_publisher" name="right_cam_base" args="0.032 -0.106 0 -1.5708 0 0 base right_cam_base 100" />
+    <node pkg="tf" type="static_transform_publisher" name="left_cam_base" args="0.032 0.106 0 1.5708 0 0 base left_cam_base 100" />
+    <node pkg="tf" type="static_transform_publisher" name="back_cam_base" args="-0.065 0 0 3.1415 0 0 base back_cam_base 100" />
+
+    <node pkg="tf" type="static_transform_publisher" name="right_cam_base_to_opt" args="0 0 0 -1.5708 0 -1.5708 right_cam_base right_cam_optical 100" />
+    <node pkg="tf" type="static_transform_publisher" name="left_cam_base_to_opt" args="0 0 0 -1.5708 0 -1.5708 left_cam_base left_cam_optical 100" />
+    <node pkg="tf" type="static_transform_publisher" name="back_cam_base_to_opt" args="0 0 0 -1.5708 0 -1.5708 back_cam_base back_cam_optical 100" />
+
+    <node pkg="aruco_ros" type="single" name="aruco_marker_publisher_right">
+        <remap from="/camera_info" to="right_cam/camera_info" />
+        <remap from="/image" to="right_cam/image_raw" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="0.1"/>
+        <param name="marker_id"        value="1"/>
+        <param name="reference_frame"    value="right_cam_optical"/>
+        <param name="camera_frame"       value="right_cam_optical"/>
+        <param name="marker_frame" value="aruco_frame"/>
+    </node>
+
+    <node pkg="aruco_ros" type="single" name="aruco_marker_publisher_left">
+        <remap from="/camera_info" to="left_cam/camera_info" />
+        <remap from="/image" to="left_cam/image_raw" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="0.1"/>
+        <param name="marker_id"        value="1"/>
+        <param name="reference_frame"    value="left_cam_optical"/>
+        <param name="camera_frame"       value="left_cam_optical"/>
+        <param name="marker_frame" value="aruco_frame"/>
+    </node>
+
+    <node pkg="aruco_ros" type="single" name="aruco_marker_publisher_back">
+        <remap from="/camera_info" to="back_cam/camera_info" />
+        <remap from="/image" to="back_cam/image_raw" />
+        <param name="image_is_rectified" value="True"/>
+        <param name="marker_size"        value="0.1"/>
+        <param name="marker_id"        value="1"/>
+        <param name="reference_frame"    value="back_cam_optical"/>
+        <param name="camera_frame"       value="back_cam_optical"/>
+        <param name="marker_frame" value="aruco_frame"/>
+    </node>
+-->
+</launch>

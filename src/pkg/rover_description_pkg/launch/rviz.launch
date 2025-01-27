@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="is_sim" default="false"/>
+
+    <!-- <param name="rover_description" command="$(find xacro)/xacro '$(find rover_description_pkg)/urdf/rover.xacro' is_sim:=$(arg is_sim)"/>
+
+    <node name="rover_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <remap from="robot_description" to="rover_description"/>    
+    </node>
+    <node name="rover_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"  output="screen">
+        <remap from="robot_description" to="rover_description"/>    
+    </node> -->
+    <node name="rviz" pkg="rviz" type="rviz" output="screen"  required="true" args="-d $(find rover_description_pkg)/rviz.rviz"/>
+
+</launch>

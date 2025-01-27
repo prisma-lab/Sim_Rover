@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- common arguments -->
+    <arg name="image_width" default="2048" /> 
+    <arg name="image_height" default="1536" /> 
+    
+    <arg name="show_detections" default="false" />
+    <arg name="marker_size" default="0.10" doc="length of the physical marker's side in meters"/>
+    <arg name="dictionary_name" default="DICT_ARUCO_ORIGINAL" />
+    <arg name="blur_window_size" default="7" />
+    <arg name="num_detected" default="25" /><!-- 0: do not use it, -->
+    <arg name="min_prec_value" default="80" /><!-- 0: do not use it, 80 means aruco marker must be detected in 80% of the last pics to be displayed -->
+    <arg name="enable_blur" default="true" />
+    <arg name="is_grey" default="false" />
+    <arg name="camera_rate_subsampling" default="1" /> <!-- era 5-->
+
+    <node pkg="aruco_detector_ocv" type="node" name="right_cam_detector" output="screen">
+        <param name="node_name" type="string" value="right_cam_detector"/>
+        <param name="camera" type="string" value="/rover/right_cam/image_raw"/>
+        <param name="camera_info" type="string" value="/rover/right_cam/camera_info"/>
+        <param name="/aruco_detector/image_transport" type="string" value="theora"/>
+        
+        <param name="tf_prefix" type="string" value="rover/right_cam/marker_id"/>
+        <param name="show_detections" type="bool" value="$(arg show_detections)"/>
+        <param name="marker_size" type="double" value="$(arg marker_size)"/>
+        <param name="dictionary_name" type="string" value="$(arg dictionary_name)"/>
+        <param name="image_width" type="double" value="$(arg image_width)"/>
+        <param name="image_height" type="double" value="$(arg image_height)"/>
+        <param name="camera_rate_subsampling" value="$(arg camera_rate_subsampling)" />
+        <param name="is_grey" type="bool" value="$(arg is_grey)"/>
+        <param name="enable_blur" type="bool" value="$(arg enable_blur)"/>
+        <param name="blur_window_size" type="double" value="$(arg blur_window_size)"/>
+        <param name="num_detected" type="double" value="$(arg num_detected)"/>
+        <param name="min_prec_value" type="double" value="$(arg min_prec_value)"/>
+    </node>
+
+    <node pkg="aruco_detector_ocv" type="node" name="left_cam_detector" output="screen">
+        <param name="node_name" type="string" value="left_cam_detector"/>
+        <param name="camera" type="string" value="/rover/left_cam/image_raw"/>
+        <param name="camera_info" type="string" value="/rover/left_cam/camera_info"/>
+        <param name="/aruco_detector/image_transport" type="string" value="theora"/>
+        
+        <param name="tf_prefix" type="string" value="rover/left_cam/marker_id"/>
+        <param name="show_detections" type="bool" value="$(arg show_detections)"/>
+        <param name="marker_size" type="double" value="$(arg marker_size)"/>
+        <param name="dictionary_name" type="string" value="$(arg dictionary_name)"/>
+        <param name="image_width" type="double" value="$(arg image_width)"/>
+        <param name="image_height" type="double" value="$(arg image_height)"/>
+        <param name="camera_rate_subsampling" value="$(arg camera_rate_subsampling)" />
+        <param name="is_grey" type="bool" value="$(arg is_grey)"/>
+        <param name="enable_blur" type="bool" value="$(arg enable_blur)"/>
+        <param name="blur_window_size" type="double" value="$(arg blur_window_size)"/>
+        <param name="num_detected" type="double" value="$(arg num_detected)"/>
+        <param name="min_prec_value" type="double" value="$(arg min_prec_value)"/>
+    </node>
+
+    <node pkg="aruco_detector_ocv" type="node" name="back_cam_detector" output="screen">
+        <param name="node_name" type="string" value="back_cam_detector"/>
+        <param name="camera" type="string" value="/rover/back_cam/image_raw"/>
+        <param name="camera_info" type="string" value="/rover/back_cam/camera_info"/>
+        <param name="/aruco_detector/image_transport" type="string" value="theora"/>
+        
+        <param name="tf_prefix" type="string" value="rover/back_cam/marker_id"/>
+        <param name="show_detections" type="bool" value="$(arg show_detections)"/>
+        <param name="marker_size" type="double" value="$(arg marker_size)"/>
+        <param name="dictionary_name" type="string" value="$(arg dictionary_name)"/>
+        <param name="image_width" type="double" value="$(arg image_width)"/>
+        <param name="image_height" type="double" value="$(arg image_height)"/>
+        <param name="camera_rate_subsampling" value="$(arg camera_rate_subsampling)" />
+        <param name="is_grey" type="bool" value="$(arg is_grey)"/>
+        <param name="enable_blur" type="bool" value="$(arg enable_blur)"/>
+        <param name="blur_window_size" type="double" value="$(arg blur_window_size)"/>
+        <param name="num_detected" type="double" value="$(arg num_detected)"/>
+        <param name="min_prec_value" type="double" value="$(arg min_prec_value)"/>
+    </node>
+
+</launch>

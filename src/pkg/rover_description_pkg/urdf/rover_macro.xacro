@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover_macro">
+    
+    <!-- rover properties -->
+    <xacro:property name="track_width" value="0.08"/>
+    <xacro:property name="total_width" value="0.4515"/>
+    <xacro:property name="total_length" value="0.422"/>
+    <xacro:property name="total_height" value="0.202"/>
+    <xacro:property name="chassis_width" value="0.241"/>
+    <xacro:property name="chassis_height" value="0.0785"/>
+    <xacro:property name="chassis_length" value="0.320"/>
+    <xacro:property name="track_distance" value="0.2915"/>
+    <xacro:property name="wheel_axes_distance" value="0.220"/>
+
+
+    <!-- this elevates the rover visuals and the collision boxes in order to make it above the ground floor
+        and make the collision boxes inglobate the rover visuals -->
+    <xacro:property name="rover_z_elev" value="${total_height/2 - chassis_height/2}"/>
+    <xacro:property name="collision_z_elev" value="${chassis_height/2}"/>
+
+
+    <!-- to have a collision box where the front and back tracks are, while in the middle there is the cylinder
+    that acts as a differential drive robot wheel -->
+    <xacro:property name="wheel_collision_x" value="${total_length/2 - total_height/2 - 0.001}"/>
+    <xacro:property name="wheel_collision_y" value="${track_width}"/>
+    <xacro:property name="wheel_collision_z" value="${total_height - 0.02}"/>
+
+    <xacro:macro name="rover_base_frame" params="parent_link">
+
+        <joint name="world_base_joint" type="fixed">
+            <parent link="${parent_link}"/>
+            <child link="base_link"/>
+            <origin xyz="0.0 0.0 ${rover_z_elev}" rpy="0.0 0.0 0.0"/>
+        </joint>
+        
+
+        <link name="base_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="${PI/2} 0.0 ${PI/2}"/>
+                <geometry>
+                    <mesh filename="file://$(find rover_description_pkg)/meshes/prisma_rover.dae" scale="0.001 0.001 0.001"/>
+                    <!--<mesh filename="package://rover_description_pkg/meshes/A4WD3-Tracked.stl" scale="0.001 0.001 0.001"/> -->
+                </geometry>
+            </visual>
+            <inertial>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <mass value="10.0"/>
+                <!-- the x coefficient is a pezzotto to avoid rocking movement of the rover -->
+                <xacro:box_inertia m="10.0" x="${total_length}" y="${total_width}" z="${total_height}"/>
+            </inertial>
+            <collision>
+                <origin xyz="0.0 0.0 ${collision_z_elev}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${total_length} ${total_width} ${total_height - 0.0005}"/>
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="rover_rplidar_s1" params="laser_frame">
+
+        <joint name="lidar_joint" type="fixed">
+            <parent link="base_footprint"/>
+            <child link="${laser_frame}"/>
+            <origin xyz="0.0 0.0 0.23" rpy="0.0 3.14 0 "/> <!-- RP_lidar has a 180 deg rotation on y and 0 on z -->
+        </joint>
+
+
+        <link name="${laser_frame}">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <mass value="0.001"/>
+                <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+            </inertial>
+        </link>
+        
+    </xacro:macro>
+<!--
+    <xacro:macro name="rover_camera_realsense_d435i" params="camera_base_frame">
+        <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro"/>
+
+        <xacro:sensor_d435i parent="${camera_base_frame}" use_nominal_extrinsics="true">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:sensor_d435i>      
+
+        <joint name="rover_camera_joint" type="fixed">
+            <origin xyz="${chassis_length/2 - 0.02} 0.0 ${chassis_height - 0.01}" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="${camera_base_frame}"/>
+        </joint>
+
+        <link name="${camera_base_frame}"/>  
+
+
+    </xacro:macro>
+-->
+
+</robot>

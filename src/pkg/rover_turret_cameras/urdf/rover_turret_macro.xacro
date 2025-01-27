@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover_turret_macro">
+
+    <xacro:macro name="rover_turret" params="parent_link">
+        
+        <!-- cam links -->
+        <link name="right_cam_base"/>
+        <link name="left_cam_base"/>
+        <link name="back_cam_base"/>
+        <!-- optical links -->
+        <link name="right_cam_optical"/>
+        <link name="left_cam_optical"/>
+        <link name="back_cam_optical"/>
+
+        <joint name="turret_base_to_right_cam" type="fixed">
+            <origin xyz="0.032 -0.106 0" rpy="0 0 -1.5708"/>
+            <parent link="${parent_link}"/>
+            <child link="right_cam_base"/>
+        </joint>
+
+        <joint name="turret_base_to_left_cam" type="fixed">
+            <origin xyz="0.032 0.106 0" rpy="0 0 1.5708"/>
+            <parent link="${parent_link}"/>
+            <child link="left_cam_base"/>
+        </joint>
+    
+        <joint name="turret_base_to_back_cam" type="fixed">
+            <origin xyz="-0.065 0 0" rpy="0 0 3.1415"/>
+            <parent link="${parent_link}"/>
+            <child link="back_cam_base"/>
+        </joint>
+
+        <joint name="right_cam_to_optical" type="fixed">
+            <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+            <parent link="right_cam_base"/>
+            <child link="right_cam_optical"/>
+        </joint>
+
+        <joint name="left_cam_to_optical" type="fixed">
+            <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+            <parent link="left_cam_base"/>
+            <child link="left_cam_optical"/>
+        </joint>
+
+        <joint name="back_cam_to_optical" type="fixed">
+            <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+            <parent link="back_cam_base"/>
+            <child link="back_cam_optical"/>
+        </joint>
+    </xacro:macro>
+
+</robot>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="is_sim" default="true"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="true"/>
+    </include>
+
+    <param name="rover_description" command="$(find xacro)/xacro $(find rover_description_pkg)/urdf/rover.xacro is_sim:=$(arg is_sim)"/>
+    
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model bobcat -param rover_description -z 50"/>
+    
+
+</launch>

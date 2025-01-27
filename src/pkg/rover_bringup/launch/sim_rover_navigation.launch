@@ -1,0 +1,10 @@
+<launch>
+
+  <include file="$(find-pkg-share rover_gazebo)/launch/4wd_rover_gazebo.launch.py"/> <!-- da cambiare con rover_gazebo.launch.py quando sarà pronto -->
+ 
+  <include file="$(find-pkg-share rover_bringup)/launch/navigation_sim.launch.py"/>
+  <include file="$(find-pkg-share rover_bringup)/launch/slam_sim.launch.py"/>
+  
+ 
+
+</launch>
