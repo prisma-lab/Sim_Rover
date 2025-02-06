@@ -11,9 +11,9 @@ slam_toolbox:
 
     # ROS Parameters
     odom_frame: odom #rover/odom
-    map_frame: map
-    base_frame: base_link
-    scan_topic: /scan
+    map_frame: rover/map
+    base_frame: rover/base_link
+    scan_topic: /rover/scan
     use_map_saver: true
     mode: mapping #localization
 

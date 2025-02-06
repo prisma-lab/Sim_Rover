@@ -6,192 +6,287 @@
     </gazebo>
 
 <xacro:macro name="rover_wheels_sim" params="left_joint right_joint">
-    <joint name="${left_joint}" type="continuous">
-        <parent link="base_link"/>
-        <child link="diff_wheel_left"/>
-        <axis xyz="0 0 1"/>
-        <origin xyz="0.0 ${track_distance/2 + track_width/2} ${collision_z_elev}" rpy="-${PI/2} 0 0"/>
-    </joint>
+    <link name="fr_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="-1.57 0 0" />
+            <geometry>
+                <mesh filename="file://$(find rover_description_pkg)/meshes/pro_tire.dae" scale="0.5 0.5 1.0"/>
+            </geometry>
+        </visual>
 
-    <link name="diff_wheel_left">
         <collision>
+            <origin xyz="0 0 0" rpy="-1.57 0 0" />
             <geometry>
                 <cylinder radius="${total_height/2}" length="${track_width}"/>
             </geometry>
         </collision>
-        <inertial>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <mass value="0.1"/>
-            <xacro:cylinder_inertia radius="${total_height/2}" length="${track_width}" mass="0.1"/>
-        </inertial>
-    </link>
 
-    <joint name="${right_joint}" type="continuous">
-        <parent link="base_link"/>
-        <child link="diff_wheel_right"/>
-        <axis xyz="0 0 1"/>
-        <origin xyz="0.0 -${track_distance/2 + track_width/2} ${collision_z_elev}" rpy="-${PI/2} 0 0"/>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="${wheel_mass}" />
+            <inertia ixx="0.005645" ixy="0.0"  ixz="0.0" iyy= "0.01008" iyz="0.0" izz="0.005645"/>
+        </inertial>
+        <mu>5.0</mu>
+    </link>
+    <joint name="fr_wheel_to_base" type="continuous">
+        <parent link="base_link"/> 
+        <child link="fr_wheel_link"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${wheel_x_offset + front_flipper_x_offset} ${-wheel_y_offset} 0" rpy="0 0 0"/>
     </joint>
 
-    <link name="diff_wheel_right">
+    <link name="fl_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.57 0 0" />
+            <geometry>
+                <mesh filename="file://$(find rover_description_pkg)/meshes/pro_tire.dae" scale="0.5 0.5 1.0"/>
+            </geometry>
+        </visual>
+
         <collision>
+            <origin xyz="0 0 0" rpy="1.57 0 0" />
             <geometry>
                 <cylinder radius="${total_height/2}" length="${track_width}"/>
             </geometry>
         </collision>
+
         <inertial>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <mass value="0.1"/>
-            <xacro:cylinder_inertia radius="${total_height/2}" length="${track_width}" mass="0.1"/>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="${wheel_mass}" />
+            <inertia ixx="0.005645" ixy="0.0"  ixz="0.0" iyy= "0.01008" iyz="0.0" izz="0.005645"/>
         </inertial>
+        <mu>5.0</mu>
     </link>
+    <joint name="fl_wheel_to_base" type="continuous">
+        <parent link="base_link"/>
+        <child link="fl_wheel_link"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${wheel_x_offset + front_flipper_x_offset} ${wheel_y_offset} 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="rr_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.57 0 3.1415" />
+            <geometry>
+                <mesh filename="file://$(find rover_description_pkg)/meshes/pro_tire.dae" scale="0.5 0.5 1.0"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0" rpy="1.57 0 3.1415" />
+            <geometry>
+                <cylinder radius="${total_height/2}" length="${track_width}"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="${wheel_mass}" />
+            <inertia ixx="0.005645" ixy="0.0"  ixz="0.0" iyy= "0.01008" iyz="0.0" izz="0.005645"/>
+        </inertial>
+        <mu>5.0</mu>
+    </link>
+    <joint name="rr_wheel_to_base" type="continuous">
+        <parent link="base_link"/>
+        <child link="rr_wheel_link"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${-wheel_x_offset} ${-wheel_y_offset} 0"/>
+    </joint>
+
+    <link name="rl_wheel_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="-1.57 0 3.1415" />
+            <geometry>
+                <mesh filename="file://$(find rover_description_pkg)/meshes/pro_tire.dae" scale="0.5 0.5 1.0"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0" rpy="-1.57 0 3.1415" />
+            <geometry>
+                <cylinder radius="${total_height/2}" length="${track_width}"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <mass value="${wheel_mass}" />
+            <inertia ixx="0.005645" ixy="0.0"  ixz="0.0" iyy= "0.01008" iyz="0.0" izz="0.005645"/>
+        </inertial>
+        <mu>5.0</mu>
+    </link>
+    <joint name="rl_wheel_to_base" type="continuous">
+        <parent link="base_link"/>
+        <child link="rl_wheel_link"/>
+        <axis xyz="0 1 0"/>
+        <origin xyz="${-wheel_x_offset} ${wheel_y_offset} 0"/>
+    </joint>
 </xacro:macro>
 
+<!-- Camera -->
 <xacro:macro name="camera_gazebo" params="camera_base_frame camera_topic camera_info_topic">
     <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro"/>
 
-    <xacro:sensor_d435i parent="${camera_base_frame}" use_nominal_extrinsics="true">
+    <!-- <xacro:sensor_d435i parent="${camera_base_frame}" use_nominal_extrinsics="true">
         <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:sensor_d435i>
+    </xacro:sensor_d435i> -->
 
 
-    <joint name="rover_camera_joint" type="fixed">
-        <origin xyz="${chassis_length/2 - 0.02} 0.0 ${chassis_height - 0.01}" rpy="0.0 0.0 0.0"/>
-        <parent link="base_link"/>
+    <joint name="camera_to_payload" type="fixed">
+        <origin xyz="0.02 0 ${1 -0.085 - total_height}" rpy="0 0 0"/>
+        <parent link="payload_link"/>
         <child link="${camera_base_frame}"/>
     </joint>
 
-    <link name="${camera_base_frame}">        
-    </link>    
+    <link name="${camera_base_frame}">
+        <visual>
+        <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+        <geometry>
+                <mesh filename="file://$(find rover_description_pkg)/meshes/realsense.dae "/>
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="-0.01 0.0 0.0" rpy="0 0 0"/>
+        <geometry>
+            <box size="0.02 0.1 0.025"/>
+        </geometry>
+        </collision>        
+    </link>   
 
-    <!-- IMU Integration --> 
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="0.005 0.018 0.013" rpy="0 0 0"/>
+    <!-- <origin xyz="${r200_cam_rgb_px} ${r200_cam_rgb_py} ${r200_cam_rgb_pz}" rpy="0 0 0"/> -->
+    <parent link="${camera_base_frame}"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
 
-    <gazebo reference="camera_depth_frame">
-        <sensor name="${camera_base_frame}" type="depth">
-            <update_rate>20</update_rate>
-            <camera>
-            <horizontal_fov>1.047198</horizontal_fov>
-            <image>
-                <width>640</width>
-                <height>480</height>
-                <format>R8G8B8</format>
-            </image>
-            <clip>
-                <near>0.05</near>
-                <far>3</far>
-            </clip>
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+  </joint>
+  <link name="camera_rgb_optical_frame"/>
+
+  <joint name="camera_depth_joint" type="fixed">
+    <origin xyz="0.005 0.028 0.013" rpy="0 0 0"/>
+    <!-- <origin xyz="${r200_cam_rgb_px} ${r200_cam_rgb_py + r200_cam_depth_offset} ${r200_cam_rgb_pz}" rpy="0 0 0"/> -->
+    <parent link="${camera_base_frame}"/>
+    <child link="camera_depth_frame"/>
+  </joint>
+  <link name="camera_depth_frame"/>
+
+  <joint name="camera_depth_optical_joint" type="fixed">
+    <!-- <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> -->
+    <origin xyz="0 0 0" rpy="0 0 0"/> 
+    <parent link="camera_depth_frame"/>
+    <child link="camera_depth_optical_frame"/>
+  </joint>
+  <link name="camera_depth_optical_frame"/>
+
+    <gazebo reference="${camera_base_frame}">
+        <sensor name="d435_color" type="camera">
+            <topic>color/image_raw</topic>
+            <ignition_frame_id>rover/camera_link</ignition_frame_id>
+            <gz_frame_id>rover/camera_link</gz_frame_id>
+            <camera name="d435">
+                <camera_info_topic>color/camera_info</camera_info_topic>
+                <horizontal_fov>1.21126</horizontal_fov>
+				<image>
+					<width>640</width>
+					<height>480</height>
+					<format>RGB_INT8</format>
+				</image>
+				<clip>
+					<near>0.1</near>
+					<far>100</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0</mean>
+					<stddev>0.007</stddev>
+				</noise>
             </camera>
-            <plugin name="${camera_base_frame}_controller" filename="libgazebo_ros_openni_kinect.so">
-            <baseline>0.2</baseline>
-            <alwaysOn>true</alwaysOn>
-            <updateRate>1.0</updateRate>
-            <cameraName>rover</cameraName>
-            <imageTopicName>${camera_topic}</imageTopicName>
-            <cameraInfoTopicName>${camera_info_topic}</cameraInfoTopicName>
-            <depthImageTopicName>depth/${camera_topic}</depthImageTopicName>
-            <depthImageInfoTopicName>depth/${camera_info_topic}</depthImageInfoTopicName>
-            <pointCloudTopicName>depth/points</pointCloudTopicName>
-            <frameName>camera_depth_optical_frame</frameName>
-            <pointCloudCutoff>0.5</pointCloudCutoff>
-            <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
-            <distortionK1>0.00000001</distortionK1>
-            <distortionK2>0.00000001</distortionK2>
-            <distortionK3>0.00000001</distortionK3>
-            <distortionT1>0.00000001</distortionT1>
-            <distortionT2>0.00000001</distortionT2>
-            <CxPrime>0</CxPrime>
-            <Cx>0</Cx>
-            <Cy>0</Cy>
-            <focalLength>0</focalLength>
-            <hackBaseline>0</hackBaseline>
-            </plugin>
+            <always_on>true</always_on>
+            <update_rate>10</update_rate>
+            <visualize>true</visualize>
         </sensor>
+
+		<sensor name="d435_depth" type="depth_camera">
+			<always_on>1</always_on>
+			<update_rate>10</update_rate>
+			<visualize>0</visualize>
+			<topic>depth/image_raw</topic>
+            <ignition_frame_id>rover/camera_depth_optical_frame</ignition_frame_id>
+			<pose>0 0.0175 0.5125 0 -0 0</pose>
+			<camera name="d435">
+                <point_cloud_topic>depth/color/points</point_cloud_topic>
+                <camera_info_topic>depth/camera_info</camera_info_topic>
+				<horizontal_fov>1.48702</horizontal_fov>
+				<image>
+					<width>1280</width>
+					<height>720</height>
+				</image>
+				<clip>
+					<near>0.1</near>
+					<far>100</far>
+				</clip>
+				<!-- <noise>
+					<type>gaussian</type>
+					<mean>0</mean>
+					<stddev>0.007</stddev>
+				</noise> -->
+			</camera>
+		</sensor>        
     </gazebo>
-</xacro:macro>
 
-
-<xacro:macro name="lidar_gazebo_sensor" params="laser_frame laser_topic" > 
-    <joint name="lidar_joint" type="fixed">
-        <parent link="base_footprint"/>
-        <child link="${laser_frame}"/>
-        <!-- the lidar has been raised by 5mm with respect to its original position because of laser rays detecting ghost shapes -->
-        <origin xyz="0.0 0.0 ${0.22+0.005}" rpy="0.0 0.0 0 "/> <!-- rpy had a 180 deg rotation on y and 0 on z -->
-    </joint>
-
-
-    <link name="${laser_frame}">
-        <inertial>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <mass value="0.001"/>
-            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-        </inertial>
-    </link>
-    
-    <gazebo reference="${laser_frame}">
-      <sensor type="ray" name="head_hokuyo_sensor">
-        <pose>0 0 0 0 0 0 </pose> <!-- rpy: y was -{PI} rotation on y and 0 on z-->
-        <visualize>true</visualize>
-        <update_rate>40</update_rate>
-        <ray>
-            <scan>
-              <horizontal>
-                <samples>720</samples>
-                <resolution>1</resolution>
-                <min_angle>-${PI} </min_angle>
-                <max_angle>${PI} </max_angle>
-              </horizontal>
-            </scan>
-            <range>
-              <min>0.01</min>
-              <max>20.0</max>
-              <resolution>0.01</resolution>
-            </range>
-            <noise>
-              <type>gaussian</type>
-              <!-- Noise parameters based on published spec for Hokuyo laser
-                    achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
-                    stddev of 0.01m will put 99.7% of samples within 0.03m of the true
-                    reading. -->
-              <mean>0.0</mean>
-              <stddev>0.01</stddev>
-            </noise>
-        </ray>
-        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-            <topicName>${laser_topic}</topicName>
-            <frameName>${laser_frame}</frameName>
+    <gazebo>    
+        <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+            <render_engine>ogre2</render_engine>
         </plugin>
-      </sensor>
     </gazebo>
-
 </xacro:macro>
 
+    <!-- Gazebo Plugins -->
 <xacro:macro name="gazebo_diff_drive_controller" params="left_joint right_joint">
+
     <gazebo>
-        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-            <legacyMode>true</legacyMode>
-            <rosDebugLevel>Debug</rosDebugLevel>
-            <publishWheelTF>false</publishWheelTF>
-            <robotNamespace>/</robotNamespace>
-            <publishTf>1</publishTf>
-            <publishWheelJointState>false</publishWheelJointState>
-            <alwaysOn>true</alwaysOn>
-            <updateRate>100.0</updateRate>
-            <leftJoint>${left_joint}</leftJoint>
-            <rightJoint>${right_joint}</rightJoint>
-            <wheelSeparation>${total_width - track_width}</wheelSeparation>
-            <wheelDiameter>${total_height}</wheelDiameter>
-            <broadcastTF>1</broadcastTF>
-            <wheelTorque>30</wheelTorque>
-            <wheelAcceleration>1.8</wheelAcceleration>
-            <commandTopic>cmd_vel</commandTopic>
-            <odometryFrame>odom</odometryFrame>
-            <odometryTopic>odom</odometryTopic>
-            <odometrySource>0</odometrySource>
-            <!-- 0=ENCODER, 1=WORLD -->
-            <robotBaseFrame>base_footprint</robotBaseFrame>
+        <plugin name="ignition::gazebo::systems::DiffDrive" filename="ignition-gazebo-diff-drive-system"> 
+            <num_wheel_pairs>2</num_wheel_pairs>
+            <!-- Wheel Information -->
+            <left_joint>rl_wheel_to_base</left_joint>
+            <left_joint>fl_wheel_to_base</left_joint>
+            <right_joint>rr_wheel_to_base</right_joint>
+            <right_joint>fr_wheel_to_base</right_joint>
+            <wheel_separation>0.37</wheel_separation>
+            <wheel_radius>0.102</wheel_radius>
+
+            <!-- Limits -->
+            <max_linear_acceleration>5</max_linear_acceleration>
+            <min_linear_acceleration>-5</min_linear_acceleration>
+            <max_angular_acceleration>4</max_angular_acceleration>
+            <min_angular_acceleration>-4</min_angular_acceleration>
+
+            
+            <!-- Output -->
+            <frame_id>rover/odom</frame_id>
+            <child_frame_id>rover/base_link</child_frame_id>
+
+            <!-- Topics -->
+            <topic>/cmd_vel</topic>
+            <odom_topic>/odom/wheels</odom_topic>
+            <tf_topic>/tf_gazebo</tf_topic>
+
         </plugin>
+
+        <plugin filename="ignition-gazebo-joint-state-publisher-system" name="ignition::gazebo::systems::JointStatePublisher">
+            <topic>/joint_states</topic>
+        </plugin>      
+
     </gazebo>
 </xacro:macro>
+
+
 
 <xacro:macro name="gazebo_wheel_contact">
     <gazebo reference="diff_wheel_left">

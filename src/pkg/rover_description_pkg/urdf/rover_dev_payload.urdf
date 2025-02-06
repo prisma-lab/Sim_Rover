@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover_payload">
+<xacro:macro name="rover_payload_frame" params="payload_frame">
+
+    <link name="${payload_frame}">
+        <!-- <visual>
+            <origin xyz="0 0.0115 0" rpy="1.57 -0 1.57" />
+            <geometry>
+                <mesh filename="file://$(find roverrobotics_description)/meshes/rover_payload.dae"/>
+            </geometry>
+        </visual> -->
+
+        <collision>
+            <origin xyz="0 0.0115 0.05" rpy="0 0 0" />
+            <geometry>
+                <box size="${total_length} ${total_width -2*track_width} 0.03"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="-0.01 0 0" rpy="0 0 0"/>
+            <mass value="2.95" />
+            <inertia ixx="0.018398" ixy="0.0"  ixz="0.0" iyy="0.04064" iyz="0.0" izz="0.05396" />
+        </inertial>
+    </link>
+
+    <joint name="payload_to_base" type="fixed">
+        <parent link="base_link"/>
+        <child link="${payload_frame}"/>
+        <origin xyz="0 0 ${payload_z_offset}"/>
+    </joint>
+
+    <joint name="pole_to_payload" type="fixed">
+        <origin xyz="0 0 ${ 0.5 - total_height/2}" rpy="0 0 0"/>
+        <parent link="${payload_frame}"/>
+        <child link="pole_link"/>
+    </joint>
+
+</xacro:macro>
+
+</robot>

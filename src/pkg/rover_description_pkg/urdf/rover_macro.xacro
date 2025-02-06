@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover_macro">
     
-    <!-- rover properties -->
+        <!-- rover properties -->
     <xacro:property name="track_width" value="0.08"/>
     <xacro:property name="total_width" value="0.4515"/>
     <xacro:property name="total_length" value="0.422"/>
@@ -11,19 +11,26 @@
     <xacro:property name="chassis_length" value="0.320"/>
     <xacro:property name="track_distance" value="0.2915"/>
     <xacro:property name="wheel_axes_distance" value="0.220"/>
-
-
-    <!-- this elevates the rover visuals and the collision boxes in order to make it above the ground floor
-        and make the collision boxes inglobate the rover visuals -->
-    <xacro:property name="rover_z_elev" value="${total_height/2 - chassis_height/2}"/>
-    <xacro:property name="collision_z_elev" value="${chassis_height/2}"/>
-
-
-    <!-- to have a collision box where the front and back tracks are, while in the middle there is the cylinder
-    that acts as a differential drive robot wheel -->
     <xacro:property name="wheel_collision_x" value="${total_length/2 - total_height/2 - 0.001}"/>
     <xacro:property name="wheel_collision_y" value="${track_width}"/>
     <xacro:property name="wheel_collision_z" value="${total_height - 0.02}"/>
+    <xacro:property name="rover_z_elev" value="${total_height/2 - chassis_height/2}"/>
+    <xacro:property name="collision_z_elev" value="${chassis_height/2}"/>
+    
+
+
+    <!-- Robot Parameters -->
+    <xacro:property name="wheel_z_offset" value="0.020" />
+    <xacro:property name="wheel_x_offset" value="${wheel_axes_distance/2}" /> <!-- <xacro:property name="wheel_x_offset" value="0.145" /> -->
+    <xacro:property name="front_flipper_x_offset" value="-0.0035" />
+    <xacro:property name="wheel_y_offset" value="${(total_width-track_width)/2}" /> <!-- <xacro:property name="wheel_y_offset" value="0.18" /> -->
+    <xacro:property name="track_y_offset" value="0.11" />
+    <xacro:property name="wheel_mass" value="1.25" />
+
+    <xacro:property name="payload_z_offset" value="0.096" />
+    <!-- <xacro:include filename="$(find rover_description_pkg)/urdf/rover_dev_payload.urdf" />
+    <xacro:include filename="$(find rover_description_pkg)/urdf/rplidar_s2.urdf" /> -->
+    <xacro:include filename="$(find rover_description_pkg)/urdf/imu.urdf" />
 
     <xacro:macro name="rover_base_frame" params="parent_link">
 
@@ -36,10 +43,9 @@
 
         <link name="base_link">
             <visual>
-                <origin xyz="0.0 0.0 0.0" rpy="${PI/2} 0.0 ${PI/2}"/>
+                <origin xyz="0 0 -0.035" rpy="0 0 0" />
                 <geometry>
                     <mesh filename="file://$(find rover_description_pkg)/meshes/prisma_rover.dae" scale="0.001 0.001 0.001"/>
-                    <!--<mesh filename="package://rover_description_pkg/meshes/A4WD3-Tracked.stl" scale="0.001 0.001 0.001"/> -->
                 </geometry>
             </visual>
             <inertial>
@@ -51,30 +57,127 @@
             <collision>
                 <origin xyz="0.0 0.0 ${collision_z_elev}" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <box size="${total_length} ${total_width} ${total_height - 0.0005}"/>
+                    <box size="${total_length} ${total_width - 2*track_width} ${total_height - 0.0005}"/>                
                 </geometry>
             </collision>
         </link>
-    </xacro:macro>
-
-    <xacro:macro name="rover_rplidar_s1" params="laser_frame">
-
-        <joint name="lidar_joint" type="fixed">
-            <parent link="base_footprint"/>
-            <child link="${laser_frame}"/>
-            <origin xyz="0.0 0.0 0.23" rpy="0.0 3.14 0 "/> <!-- RP_lidar has a 180 deg rotation on y and 0 on z -->
-        </joint>
 
 
-        <link name="${laser_frame}">
-            <inertial>
-                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-                <mass value="0.001"/>
-                <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-            </inertial>
-        </link>
+        <link name="pole_link">
+            <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="0.0125" length="${1.1-2*total_height}"/>
+                </geometry>
+            </collision>
+        </link>    
         
     </xacro:macro>
+
+
+
+
+    <link name="payload_link">
+        <!-- <visual>
+            <origin xyz="0 0.0115 0" rpy="1.57 -0 1.57" />
+            <geometry>
+                <mesh filename="file://$(find roverrobotics_description)/meshes/rover_payload.dae"/>
+            </geometry>
+        </visual> -->
+
+        <collision>
+            <origin xyz="0 0.0115 0.05" rpy="0 0 0" />
+            <geometry>
+                <box size="${total_length} ${total_width -2*track_width} 0.03"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="-0.01 0 0" rpy="0 0 0"/>
+            <mass value="2.95" />
+            <inertia ixx="0.018398" ixy="0.0"  ixz="0.0" iyy="0.04064" iyz="0.0" izz="0.05396" />
+        </inertial>
+    </link>
+
+    <joint name="payload_to_base" type="fixed">
+        <parent link="base_link"/>
+        <child link="payload_link"/>
+        <origin xyz="0 0 ${payload_z_offset}"/>
+    </joint>
+
+    <joint name="pole_to_payload" type="fixed">
+        <origin xyz="0 0 ${ 0.5 - total_height/2}" rpy="0 0 0"/>
+        <parent link="payload_link"/>
+        <child link="pole_link"/>
+    </joint>
+
+
+
+
+
+<xacro:macro name="lidar_gazebo_sensor" params="laser_frame laser_topic">
+
+        <joint name="lidar_to_payload" type="fixed">
+            <parent link="payload_link"/>
+            <child link="${laser_frame}"/>
+            <origin xyz="0.07 0 0.11" rpy="0 0 3.1415"/>
+        </joint>
+
+        <link name="${laser_frame}">
+            <visual>
+                <origin xyz="0 0 0" rpy="-1.57 0 3.1415"/>
+                <geometry>
+                    <mesh filename="file://$(find rover_description_pkg)/meshes/rplidar_s2.dae"/>
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 -0.05" rpy="0 0 3.1415"/>
+                <geometry>
+                    <cylinder radius="0.05" length="0.15"/>
+                </geometry>
+            </collision>
+
+        </link>
+
+        <gazebo reference="${laser_frame}">
+        <sensor name='gpu_lidar' type='gpu_lidar'>
+            <pose>0 0 0 0 0 0</pose>
+            <topic>${laser_topic}</topic>
+            <ignition_frame_id>rover/lidar_link</ignition_frame_id>
+            <update_rate>10</update_rate>
+            <lidar>
+                <scan>
+                <horizontal>
+                    <samples>640</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-3.14159</min_angle>
+                    <max_angle>3.14159</max_angle>
+                </horizontal>
+                <vertical>
+                    <samples>1</samples>
+                    <resolution>1</resolution>
+                    <min_angle>0.0</min_angle>
+                    <max_angle>0.0</max_angle>
+                </vertical>
+                </scan>
+                <range>
+                <min>0.15</min>
+                <max>10.0</max>
+                <resolution>0.01</resolution>
+                </range>
+            </lidar>
+            <visualize>true</visualize>
+        </sensor>
+    </gazebo>
+
+    <!-- <gazebo>    
+        <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+            <render_engine>ogre2</render_engine>
+        </plugin>
+    </gazebo> -->
+    </xacro:macro>
+
 <!--
     <xacro:macro name="rover_camera_realsense_d435i" params="camera_base_frame">
         <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro"/>
