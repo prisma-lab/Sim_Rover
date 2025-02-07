@@ -10,7 +10,7 @@ slam_toolbox:
     ceres_loss_function: None
 
     # ROS Parameters
-    odom_frame: odom #rover/odom
+    odom_frame: rover/odom #rover/odom
     map_frame: rover/map
     base_frame: rover/base_link
     scan_topic: /rover/scan
