@@ -129,7 +129,7 @@
 
     <!-- <xacro:sensor_d435i parent="${camera_base_frame}" use_nominal_extrinsics="true">
         <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:sensor_d435i> -->
+    </xacro:sensor_d435i>  -->
 
 
     <joint name="camera_to_payload" type="fixed">

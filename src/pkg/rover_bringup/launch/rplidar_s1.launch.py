@@ -11,7 +11,8 @@ def generate_launch_description():
             parameters=[{
                 'serial_port': '/dev/ttyUSB0',
                 'serial_baudrate': 256000,
-                'frame_id': 'rover/laser',
+                'frame_id': 'rover/lidar_link',
+                'topic_name': 'scan',
                 'inverted': True,
                 'angle_compensate': True,
                 'scan_qos.reliability': 'SYSTEM_DEFAULT',

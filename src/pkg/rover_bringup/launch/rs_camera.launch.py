@@ -22,7 +22,7 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 
 
-configurable_parameters = [{'name': 'camera_name',                  'default': 'rover_camera', 'description': 'camera unique name'},
+configurable_parameters = [{'name': 'camera_name',                  'default': 'camera', 'description': 'camera unique name'},
                            {'name': 'camera_namespace',             'default': '', 'description': 'namespace for camera'},
                            {'name': 'depth_qos',                    'default': 'SENSOR_DATA', 'description': 'depth_qos'},
                            {'name': 'color_qos',                    'default': 'DEFAULT', 'description': 'color_qos'},
@@ -129,7 +129,7 @@ tf_publisher_node = Node(
                 package='tf2_ros',
                 executable='static_transform_publisher',
                 name="footprint_to_rover_camera",
-                arguments=["0.14", "0.0", "0.145", "0.0", "0.0", "0.0", "rover/base_footprint", "rover_camera_link"],
+                arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "rover/camera_link", "camera_link"],
             )
 nodes_to_start = [
         tf_publisher_node,

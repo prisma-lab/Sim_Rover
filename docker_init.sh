@@ -1,0 +1,8 @@
+xhost +local:root
+IMAGE_ID=$(docker images -q $1)
+WORKSPACE_DIR=$(pwd)/src
+docker run --rm -d -it --name=$2 --net=host --env="DISPLAY=$DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:ro" --privileged -v /dev:/dev --volume=${WORKSPACE_DIR}/pkg:/home/user/ros2_ws/src/pkg  $1 \
+bash -c " source /opt/ros/humble/setup.bash && colcon build --symlink-install && \
+                            source /home/user/ros2_ws/install/setup.bash && ros2 launch rover_bringup rover_start.launch"
+
+xhost -local:root

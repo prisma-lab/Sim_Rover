@@ -29,7 +29,7 @@ def generate_launch_description():
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
 
 
-    rl_launch_path = os.path.join(get_package_share_directory("rover_bringup"), 'launch', 'robot_localizer.launch.py')
+    rl_launch_path = os.path.join(get_package_share_directory("rover_bringup"), 'launch', 'sim_robot_localizer.launch.py')
     robot_localizer_launch = IncludeLaunchDescription(PythonLaunchDescriptionSource(rl_launch_path),
         launch_arguments={'use_sim_time': use_sim_time}.items())
 

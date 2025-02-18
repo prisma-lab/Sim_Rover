@@ -16,13 +16,13 @@ def generate_launch_description():
 
     declare_use_sim_time_argument = DeclareLaunchArgument(
         'use_sim_time',
-        default_value='false',
+        default_value='true',
         description='Use simulation/Gazebo clock')
 
 
     # Start robot localization using an Extended Kalman filter
     robot_localization_file_path = Path(get_package_share_directory(
-        'rover_bringup'), 'config/mapper_localization_ekf.yaml')
+        'rover_bringup'), 'config/localization_ekf.yaml')
     
     localization_node = Node(
     	package='robot_localization',

@@ -16,28 +16,7 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/p
 RUN apt-get update
 RUN apt-get install -y ignition-fortress
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    aptitude \
-    tmux \
-    tmuxp \
-    libcanberra-gtk-module \
-    libcanberra-gtk3-module \
-    && locale-gen en_US.UTF-8 \
-    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-
-COPY tmux.conf .tmux.conf    
-
 RUN apt-get update && apt-get install -y
-
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
-    && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-    && apt-get update \
-    && apt-get upgrade -y \
-    && echo "source /opt/ros/humble/setup.bash" >> .bashrc \
-    && pip install --user -U empy==3.3.4 pyros-genmsg setuptools \
-    && rm -rf /var/lib/apt/lists/*
 
 ##You may add additional apt-get here
 RUN apt install kmod -y
@@ -59,6 +38,12 @@ RUN apt install ros-humble-rtabmap-ros -y
 RUN apt install ros-humble-rviz-visual-tools -y
 RUN apt install ros-humble-imu-tools -y
 RUN apt install ros-humble-octomap-rviz-plugins -y
+
+#JOYSTICK
+RUN apt install joystick -y
+RUN apt install ros-humble-joy -y
+RUN apt install ros-humble-teleop-twist-joy -y
+
 
 #install for gz sim
 RUN apt-get install -y ros-humble-ros-ign-bridge && \
@@ -82,30 +67,6 @@ RUN sudo apt install pip -y
 RUN pip3 install opencv-python opencv-contrib-python transforms3d
 RUN apt-get update && apt install ros-humble-tf-transformations -y
 
-#install for drone
-RUN apt update && apt-get install -y --no-install-recommends \ 
-    ros-humble-plotjuggler-ros \
-    ros-humble-ros-gzgarden \
-    ros-humble-mavros \
-    ros-humble-mavros-extras \
-    ros-humble-mavros-msgs \
-    ros-humble-octomap \
-    ros-humble-octomap-msgs
-
-RUN apt update && apt-get install -y --no-install-recommends \     
-    libcanberra-gtk-module libcanberra-gtk3-module
-
-# # Micro-XRCE-DDS-Agent
-
-RUN git clone https://github.com/eProsima/Micro-XRCE-DDS-Agent.git \
-    && cd Micro-XRCE-DDS-Agent \
-    && mkdir build \
-	&& cd build \
-	&& cmake .. \
-	&& make \
-	&& sudo make install \
-	&& sudo ldconfig /usr/local/lib/
-
 #RUN export GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/ros2_iiwa/iiwa_description/gazebo/models
 ENV GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/ros2_iiwa/iiwa_description/gazebo/models
 
@@ -116,8 +77,6 @@ ENV HOME=/home/user
 ENV ROS_DISTRO=humble
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ENV ROS_DOMAIN_ID=77
-ENV LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
 
 #Add non root user using UID and GID passed as argument
 ARG USER_ID
@@ -129,6 +88,7 @@ RUN echo "user ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 RUN sudo adduser user dialout
 RUN sudo adduser user video
+RUN sudo adduser user sgx
 RUN sudo groupadd iio
 RUN sudo adduser user iio
 RUN sudo adduser user plugdev
@@ -146,17 +106,6 @@ WORKDIR ${HOME}/ros2_ws/src/git
 #RUN git clone -b humble --single-branch https://github.com/ros-perception/vision_opencv.git
 RUN git clone -b humble --single-branch https://github.com/rst-tu-dortmund/costmap_converter.git
 RUN git clone -b humble-devel --single-branch https://github.com/rst-tu-dortmund/teb_local_planner.git
-RUN git clone --single-branch -b release/1.14 https://github.com/PX4/px4_msgs.git
-RUN git clone --single-branch -b release/v1.14 https://github.com/PX4/px4_ros_com.git 
-
-RUN git config --global --add safe.directory '*'
-RUN git clone --single-branch -b fcl-0.5 https://github.com/flexible-collision-library/fcl.git	\
-    && cd fcl \
-    && mkdir build \
-    && cd build \
-    && cmake .. \
-    && make \
-    && make install
 ## Optional: Clean up unnecessary files if needed
 #RUN rm -rf unilidar_sdk/unitree_lidar_ros/src/unitree_lidar_ros
 
