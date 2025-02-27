@@ -1,13 +1,13 @@
 <launch>
 
-  <include file="$(find-pkg-share rover_description_pkg)/launch/robot_description.launch.py"/>
+  <include file="$(find-pkg-share rover_description_pkg)/launch/new_rover_description.launch.py"/>
   <include file="$(find-pkg-share roboclaw_ros2)/launch/diffdrive.launch"/>
   <include file="$(find-pkg-share rover_bringup)/launch/rplidar_s1.launch.py"/>
 
   
-
-  <include file="$(find-pkg-share rover_bringup)/launch/navigation_launch.py"/>
   <include file="$(find-pkg-share rover_bringup)/launch/online_async_launch.py"/>
+  <include file="$(find-pkg-share rover_bringup)/launch/navigation_launch.py"/>
+
 
   <include file="$(find-pkg-share rover_bringup)/launch/rs_camera.launch.py"/>
   

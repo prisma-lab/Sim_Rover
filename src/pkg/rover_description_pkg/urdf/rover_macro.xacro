@@ -120,7 +120,8 @@
         <joint name="lidar_to_payload" type="fixed">
             <parent link="payload_link"/>
             <child link="${laser_frame}"/>
-            <origin xyz="0.075 0 0.04" rpy="0 3.1415 0"/>
+            <origin xyz="0.075 0 0.035" rpy="0 3.1415 0.0"/>
+
         </joint>
 
         <link name="${laser_frame}">
@@ -145,7 +146,7 @@
             <pose>0 0 0 0 0 0</pose>
             <topic>${laser_topic}</topic>
             <ignition_frame_id>rover/lidar_link</ignition_frame_id>
-            <update_rate>10</update_rate>
+            <update_rate>30</update_rate>
             <lidar>
                 <scan>
                 <horizontal>

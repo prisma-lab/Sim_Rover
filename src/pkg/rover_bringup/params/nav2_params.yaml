@@ -1,50 +1,50 @@
-# amcl:
-#   ros__parameters:
-#     use_sim_time: False
-#     alpha1: 0.2
-#     alpha2: 0.2
-#     alpha3: 0.2
-#     alpha4: 0.2
-#     alpha5: 0.2
-#     base_frame_id: "base_footprint"
-#     beam_skip_distance: 0.5
-#     beam_skip_error_threshold: 0.9
-#     beam_skip_threshold: 0.3
-#     do_beamskip: false
-#     global_frame_id: "rover/map"
-#     lambda_short: 0.1
-#     laser_likelihood_max_dist: 2.0
-#     laser_max_range: 100.0
-#     laser_min_range: -1.0
-#     laser_model_type: "likelihood_field"
-#     max_beams: 60
-#     max_particles: 2000
-#     min_particles: 500
-#     odom_frame_id: "odom" #"rover/odom"
-#     pf_err: 0.05
-#     pf_z: 0.99
-#     recovery_alpha_fast: 0.0
-#     recovery_alpha_slow: 0.0
-#     resample_interval: 1
-#     robot_model_type: "nav2_amcl::DifferentialMotionModel"
-#     save_pose_rate: 0.5
-#     sigma_hit: 0.2
-#     tf_broadcast: true
-#     transform_tolerance: 1.0
-#     update_min_a: 0.2
-#     update_min_d: 0.25
-#     z_hit: 0.5
-#     z_max: 0.05
-#     z_rand: 0.5
-#     z_short: 0.05
-#     scan_topic: /rover/scan
+amcl:
+  ros__parameters:
+    use_sim_time: False
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: "base_footprint"
+    beam_skip_distance: 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+    global_frame_id: "rover/map"
+    lambda_short: 0.1
+    laser_likelihood_max_dist: 2.0
+    laser_max_range: 100.0
+    laser_min_range: -1.0
+    laser_model_type: "likelihood_field"
+    max_beams: 60
+    max_particles: 2000
+    min_particles: 500
+    odom_frame_id: "odom" #"rover/odom"
+    pf_err: 0.05
+    pf_z: 0.99
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+    resample_interval: 1
+    robot_model_type: "nav2_amcl::DifferentialMotionModel"
+    save_pose_rate: 0.5
+    sigma_hit: 0.2
+    tf_broadcast: true
+    transform_tolerance: 1.0
+    update_min_a: 0.2
+    update_min_d: 0.25
+    z_hit: 0.5
+    z_max: 0.05
+    z_rand: 0.5
+    z_short: 0.05
+    scan_topic: /rover/scan
 
 bt_navigator:
   ros__parameters:
     use_sim_time: False
     global_frame: rover/map
     robot_base_frame: rover/base_link
-    odom_topic: /odom/wheels
+    odom_topic: /odom
     bt_loop_duration: 10
     default_server_timeout: 20
     # 'default_nav_through_poses_bt_xml' and 'default_nav_to_pose_bt_xml' are use defaults:
@@ -138,7 +138,7 @@ controller_server:
       yaw_goal_tolerance: 0.15
     FollowPath:
           plugin: "teb_local_planner::TebLocalPlannerROS"
-          odom_topic: rover/odom
+          odom_topic: /odom
           map_frame: rover/map
 
           # Trajectory
@@ -159,7 +159,7 @@ controller_server:
           min_turning_radius: 0.0
           footprint_model:
             type: "circular"
-            radius: 0.5
+            radius: 0.35
           # GoalTolerance
           xy_goal_tolerance: 0.15  # was 0.1
           yaw_goal_tolerance: 0.15  # was 0.1
@@ -209,14 +209,14 @@ local_costmap:
     ros__parameters:
       update_frequency: 5.0
       publish_frequency: 10.0
-      global_frame: rover/odom #rover/odom
+      global_frame: odom #rover/odom
       robot_base_frame: rover/base_link
       use_sim_time: False
       rolling_window: true
       width: 6
       height: 6
       resolution: 0.05
-      robot_radius: 0.5
+      robot_radius: 0.35
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
@@ -234,6 +234,7 @@ local_costmap:
         observation_sources: scan
         scan:
           topic: /rover/scan
+          obstacle_min_range: 0.3
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -259,7 +260,7 @@ global_costmap:
       global_frame: rover/map
       robot_base_frame: rover/base_link
       use_sim_time: False
-      robot_radius: 0.5
+      robot_radius: 0.35
       resolution: 0.05
       track_unknown_space: true
       #-- WARNING THIS IS GOOD ONLY FOR LEAONARDO
@@ -275,6 +276,7 @@ global_costmap:
         observation_sources: scan
         scan:
           topic: /rover/scan
+          obstacle_min_range: 0.3
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -382,7 +384,7 @@ velocity_smoother:
     min_velocity: [-0.3, 0.0, -0.5]
     max_accel: [0.3, 0.0, 0.5]
     max_decel: [-0.3, 0.0, -0.5]
-    odom_topic: "odom/wheels"
+    odom_topic: "odom"
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]
     velocity_timeout: 1.0
