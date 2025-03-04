@@ -18,6 +18,7 @@
             <topic>imu/data</topic>
             <enable_metrics>true</enable_metrics>
             <ignition_frame_id>rover/imu_link</ignition_frame_id>
+            <gz_frame_id>rover/imu_link</gz_frame_id>
         </sensor>
     </gazebo>
 

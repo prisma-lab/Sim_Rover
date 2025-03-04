@@ -85,12 +85,12 @@
             </geometry>
         </visual> -->
 
-        <!-- <collision>
+        <collision>
             <origin xyz="-0.1 0.0 0.04" rpy="0 0 0" />
             <geometry>
-                <box size="${total_length/3} ${total_width -4.5*track_width} 0.05"/>
+                <box size="${total_length/4} ${total_width -4.5*track_width} 0.04"/>
             </geometry>
-        </collision> -->
+        </collision>
 
         <inertial>
             <origin xyz="-0.01 0 0" rpy="0 0 0"/>
@@ -102,11 +102,11 @@
     <joint name="payload_to_base" type="fixed">
         <parent link="base_link"/>
         <child link="payload_link"/>
-        <origin xyz="0 0 ${payload_z_offset}"/>
+        <origin xyz="0 0 0.14"/>
     </joint>
 
     <joint name="pole_to_payload" type="fixed">
-        <origin xyz="0 0 ${ 0.5 - total_height/2}" rpy="0 0 0"/>
+        <origin xyz="0 0 ${0.4 - total_height/2}" rpy="0 0 0"/>
         <parent link="payload_link"/>
         <child link="pole_link"/>
     </joint>
@@ -120,20 +120,25 @@
         <joint name="lidar_to_payload" type="fixed">
             <parent link="payload_link"/>
             <child link="${laser_frame}"/>
-            <origin xyz="0.075 0 0.035" rpy="0 3.1415 0.0"/>
 
+            <xacro:if value="$(arg is_sim)">
+                <origin xyz="0.075 0 -0.01" rpy="0.0 0.0 3.1415"/> 
+            </xacro:if>
+            <xacro:unless value="$(arg is_sim)">
+                <origin xyz="0.075 0 0.0" rpy="0 3.1415 0.0"/> 
+            </xacro:unless>
         </joint>
 
         <link name="${laser_frame}">
             <visual>
-                <origin xyz="0 0 0" rpy="-1.57 3.1415 3.1415"/>
+                <origin xyz="0 0 0" rpy="-1.57 0.0 3.1415"/> <!-- rpy="-1.57 0.0 3.1415" real rover-->
                 <geometry>
                     <mesh filename="file://$(find rover_description_pkg)/meshes/rplidar_s2.dae"/>
                 </geometry>
             </visual>
 
             <collision>
-                <origin xyz="0 0 -0.05" rpy="0 0 3.1415"/>
+                <origin xyz="0 0 0" rpy="0 0 3.1415"/>
                 <geometry>
                     <cylinder radius="0.04" length="0.15"/>
                 </geometry>
@@ -146,6 +151,7 @@
             <pose>0 0 0 0 0 0</pose>
             <topic>${laser_topic}</topic>
             <ignition_frame_id>rover/lidar_link</ignition_frame_id>
+            <gz_frame_id>rover/lidar_link</gz_frame_id>
             <update_rate>30</update_rate>
             <lidar>
                 <scan>

@@ -66,6 +66,7 @@ RUN apt-get update && apt-get install -y
 RUN sudo apt install pip -y
 RUN pip3 install opencv-python opencv-contrib-python transforms3d
 RUN apt-get update && apt install ros-humble-tf-transformations -y
+RUN apt-get update && apt-get install -y ros-humble-ros-gzharmonic -y
 
 #RUN export GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/ros2_iiwa/iiwa_description/gazebo/models
 ENV GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/ros2_iiwa/iiwa_description/gazebo/models
@@ -76,7 +77,7 @@ ENV DISPLAY=:0
 ENV HOME=/home/user
 ENV ROS_DISTRO=humble
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-ENV ROS_DOMAIN_ID=77
+ENV ROS_DOMAIN_ID=42
 
 #Add non root user using UID and GID passed as argument
 ARG USER_ID
