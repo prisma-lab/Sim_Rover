@@ -45,8 +45,11 @@
             <visual>
                 <origin xyz="0 0 -0.035" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="file://$(find rover_description_pkg)/meshes/prisma_rover.dae" scale="0.001 0.001 0.001"/>
+                    <mesh filename="file://$(find rover_description_pkg)/meshes/prisma_rover.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
+                <material name="grey">
+                    <color rgba="0.2350821 0.2106182 0.2557221 1.0"/>
+                </material>
             </visual>
             <inertial>
                 <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
