@@ -1,44 +1,3 @@
-# amcl:
-#   ros__parameters:
-#     use_sim_time: True
-#     alpha1: 0.2
-#     alpha2: 0.2
-#     alpha3: 0.2
-#     alpha4: 0.2
-#     alpha5: 0.2
-#     base_frame_id: "rover/base_link"
-#     beam_skip_distance: 0.5
-#     beam_skip_error_threshold: 0.9
-#     beam_skip_threshold: 0.3
-#     do_beamskip: false
-#     global_frame_id: "rover/map"
-#     lambda_short: 0.1
-#     laser_likelihood_max_dist: 2.0
-#     laser_max_range: 100.0
-#     laser_min_range: -1.0
-#     laser_model_type: "likelihood_field"
-#     max_beams: 60
-#     max_particles: 2000
-#     min_particles: 500
-#     odom_frame_id: "rover/odom" #"rover/odom"
-#     pf_err: 0.05
-#     pf_z: 0.99
-#     recovery_alpha_fast: 0.0
-#     recovery_alpha_slow: 0.0
-#     resample_interval: 1
-#     robot_model_type: "nav2_amcl::DifferentialMotionModel"
-#     save_pose_rate: 0.5
-#     sigma_hit: 0.2
-#     tf_broadcast: true
-#     transform_tolerance: 1.0
-#     update_min_a: 0.2
-#     update_min_d: 0.25
-#     z_hit: 0.5
-#     z_max: 0.05
-#     z_rand: 0.5
-#     z_short: 0.05
-#     scan_topic: /scan
-
 bt_navigator:
   ros__parameters:
     use_sim_time: True
@@ -142,11 +101,11 @@ controller_server:
           map_frame: rover/map
 
           # Trajectory
-          teb_autosize: 1.0  # deve rimanere un double
-          dt_ref: 0.5  # was 0.3
-          dt_hysteresis: 0.2  # was 0.1
+          teb_autosize: 1.0 
+          dt_ref: 0.5 
+          dt_hysteresis: 0.2 
           global_plan_overwrite_orientation: True
-          max_global_plan_lookahead_dist: 2.0  # was 3.0
+          max_global_plan_lookahead_dist: 2.0 
           feasibility_check_no_poses: 5
           publish_feedback: true
 
@@ -161,15 +120,15 @@ controller_server:
             type: "circular"
             radius: 0.3
           # GoalTolerance
-          xy_goal_tolerance: 0.15  # was 0.1
-          yaw_goal_tolerance: 0.15  # was 0.1
+          xy_goal_tolerance: 0.15  
+          yaw_goal_tolerance: 0.15  
           free_goal_vel: False
 
           # Obstacles
-          min_obstacle_dist: 0.1  # was 0.15
+          min_obstacle_dist: 0.1 
           include_costmap_obstacles: True
           costmap_obstacles_behind_robot_dist: 1.0
-          obstacle_poses_affected: 20  # was 30
+          obstacle_poses_affected: 20
           costmap_converter_plugin: ""
           costmap_converter_spin_thread: True
           costmap_converter_rate: 5.0
@@ -177,25 +136,25 @@ controller_server:
           include_dynamic_obstacles: True
 
           # Optimization
-          no_inner_iterations: 3  # was 5
-          no_outer_iterations: 2  # was 4
+          no_inner_iterations: 3  
+          no_outer_iterations: 2 
           optimization_activate: True
           optimization_verbose: False
-          penalty_epsilon: 0.04  # was 0.1, must be less than the lower of the max vel x
+          penalty_epsilon: 0.04 
           weight_max_vel_x: 2.0
           weight_max_vel_theta: 1.0
           weight_acc_lim_x: 1.0
           weight_acc_lim_theta: 1.0
           weight_kinematics_nh: 1000.0
-          weight_kinematics_forward_drive: 200.0  # was 1
+          weight_kinematics_forward_drive: 200.0 
           weight_kinematics_turning_radius: 1.0
           weight_optimaltime: 1.0
-          weight_obstacle: 100.0  # was 50
-          weight_dynamic_obstacle: 10.0  # not in use yet
-          selection_alternative_time_cost: False  # not in use yet
+          weight_obstacle: 100.0 
+          weight_dynamic_obstacle: 10.0 
+          selection_alternative_time_cost: False 
 
           # Homotopy Class Planner
-          enable_homotopy_class_planning: False  # was True, requires high computational effort
+          enable_homotopy_class_planning: False
           enable_multithreading: True
           simple_exploration: False
           max_number_classes: 4  # reduce this value to reduce the computational effort
@@ -209,7 +168,7 @@ local_costmap:
     ros__parameters:
       update_frequency: 10.0
       publish_frequency: 5.0
-      global_frame: rover/odom #rover/odom
+      global_frame: rover/odom
       robot_base_frame: rover/base_link
       use_sim_time: True
       rolling_window: true
@@ -220,8 +179,8 @@ local_costmap:
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 10.0 #was 3.0
-        inflation_radius: 0.3 #was 0.55
+        cost_scaling_factor: 10.0 
+        inflation_radius: 0.3 
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -262,12 +221,6 @@ global_costmap:
       robot_radius: 0.3
       resolution: 0.05
       track_unknown_space: true
-      #-- WARNING THIS IS GOOD ONLY FOR LEAONARDO
-      #height: 20.0
-      #width: 10.0
-      #origin_x: -2.5
-      #origin_y: -7.5
-      #--
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
@@ -288,8 +241,8 @@ global_costmap:
         map_subscribe_transient_local: True
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 10.0 #was 3.0
-        inflation_radius: 0.4 #was 0.55
+        cost_scaling_factor: 10.0 
+        inflation_radius: 0.4 
       always_send_full_costmap: True
       qos_overrides:
         scan:
@@ -313,7 +266,7 @@ map_saver:
 
 planner_server:
   ros__parameters:
-    expected_planner_frequency: 10.0 # was 20.0
+    expected_planner_frequency: 10.0
     use_sim_time: True
     planner_plugins: ["GridBased"]
     GridBased:
@@ -348,7 +301,7 @@ behavior_server:
       plugin: "nav2_behaviors/Wait"
     assisted_teleop:
       plugin: "nav2_behaviors/AssistedTeleop"
-    global_frame: rover/odom #rover/odom
+    global_frame: rover/odom
     robot_base_frame: rover/base_link
     transform_tolerance: 0.1
     use_sim_time: True

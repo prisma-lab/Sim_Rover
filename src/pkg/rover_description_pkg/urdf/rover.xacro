@@ -12,23 +12,11 @@
 
 <xacro:rover_base_frame parent_link="base_footprint"/>
 
-<!-- <xacro:rover_turret parent_link="rover_turret_plate"/> -->
-
 <!-- if it is in simulation -->
-<xacro:if value="$(arg is_sim)">
     <xacro:rover_wheels_sim left_joint="diff_drive_l_joint" right_joint="diff_drive_r_joint"/>
     <xacro:gazebo_diff_drive_controller left_joint="diff_drive_l_joint" right_joint="diff_drive_r_joint"/>
     <xacro:gazebo_wheel_contact/>
     <xacro:lidar_gazebo_sensor laser_frame="lidar_link" laser_topic="scan"/>
-
     <xacro:camera_gazebo camera_base_frame="camera_link" camera_topic="camera" camera_info_topic="camera_info"/>
-</xacro:if>
-
-<!-- if it is not in simulation -->
-<xacro:unless value="$(arg is_sim)">
-    <xacro:rover_rplidar_s1 laser_frame="laser"/>
-    <!-- <xacro:rover_camera_realsense_d435i camera_base_frame="camera_frame"/> -->
-</xacro:unless>
-
     
 </robot>

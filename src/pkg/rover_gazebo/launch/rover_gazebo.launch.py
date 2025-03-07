@@ -102,13 +102,6 @@ def generate_launch_description():
         ],
     )
 
-    # start_gazebo_ros_image_bridge_cmd = Node(
-    #     package='ros_gz_image',
-    #     executable='image_bridge',
-    #     arguments=['/camera/image_raw'],
-    #     output='screen',    
-    # )
-
     # Robot state publisher
     params = {'use_sim_time': use_sim_time, 'robot_description': robot_desc, "tf_prefix":tf_prefix,"frame_prefix":frame_prefix}
     start_robot_state_publisher_cmd = Node(
@@ -130,8 +123,6 @@ def generate_launch_description():
     ld.add_action(gz_sim)
     ld.add_action(gz_spawn_entity)
     ld.add_action(gz_ros2_bridge)
-    # ld.add_action(start_gazebo_ros_image_bridge_cmd)
-
 
     # Launch Robot State Publisher
     ld.add_action(start_robot_state_publisher_cmd)

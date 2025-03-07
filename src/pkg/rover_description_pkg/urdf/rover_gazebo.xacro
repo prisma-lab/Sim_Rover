@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover_gazebo">
 
-    <gazebo reference="chassis_link">
-        <material>Gazebo/DarkGrey</material>
-    </gazebo>
-
 <xacro:macro name="rover_wheels_sim" params="left_joint right_joint">
     <link name="fr_wheel_link">
         <visual>
@@ -155,7 +151,6 @@
 
   <joint name="camera_rgb_joint" type="fixed">
     <origin xyz="0.005 0.018 0.013" rpy="0 0 0"/>
-    <!-- <origin xyz="${r200_cam_rgb_px} ${r200_cam_rgb_py} ${r200_cam_rgb_pz}" rpy="0 0 0"/> -->
     <parent link="${camera_base_frame}"/>
     <child link="camera_rgb_frame"/>
   </joint>
@@ -170,14 +165,12 @@
 
   <joint name="camera_depth_joint" type="fixed">
     <origin xyz="0.005 0.028 0.013" rpy="0 0 0"/>
-    <!-- <origin xyz="${r200_cam_rgb_px} ${r200_cam_rgb_py + r200_cam_depth_offset} ${r200_cam_rgb_pz}" rpy="0 0 0"/> -->
     <parent link="${camera_base_frame}"/>
     <child link="camera_depth_frame"/>
   </joint>
   <link name="camera_depth_frame"/>
 
   <joint name="camera_depth_optical_joint" type="fixed">
-    <!-- <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> -->
     <origin xyz="0 0 0" rpy="0 0 0"/> 
     <parent link="camera_depth_frame"/>
     <child link="camera_depth_optical_frame"/>

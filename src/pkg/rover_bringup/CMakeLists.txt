@@ -28,8 +28,6 @@ find_package(nav2_util REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(pluginlib REQUIRED)
 
-
-
 find_package(builtin_interfaces REQUIRED)
 find_package(realsense2_camera_msgs REQUIRED)
 find_package(realsense2 2.50.0)
