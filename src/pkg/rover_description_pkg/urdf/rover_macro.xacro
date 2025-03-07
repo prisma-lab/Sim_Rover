@@ -155,7 +155,7 @@
             <topic>${laser_topic}</topic>
             <ignition_frame_id>rover/lidar_link</ignition_frame_id>
             <gz_frame_id>rover/lidar_link</gz_frame_id>
-            <update_rate>30</update_rate>
+            <update_rate>10</update_rate>
             <lidar>
                 <scan>
                 <horizontal>
