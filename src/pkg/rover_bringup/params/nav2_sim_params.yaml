@@ -270,7 +270,7 @@ planner_server:
     use_sim_time: True
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_navfn_planner/NavfnPlanner"
+      plugin: "nav2_astar_planner/AStarPlanner" #"nav2_straightline_planner/StraightLine" "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.2
       use_astar: false
       allow_unknown: true

@@ -1,0 +1,5 @@
+<library path="nav2_astar_planner_plugin">
+	<class name="nav2_astar_planner/AStarPlanner" type="nav2_astar_planner::AStarPlanner" base_class_type="nav2_core::GlobalPlanner">
+	  <description>This is an example plugin which produces straight path.</description>
+	</class>
+</library>
