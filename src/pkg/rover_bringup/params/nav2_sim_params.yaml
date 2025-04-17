@@ -2,7 +2,7 @@ bt_navigator:
   ros__parameters:
     use_sim_time: True
     global_frame: rover/map
-    robot_base_frame: rover/base_link
+    robot_base_frame: rover/base_footprint
     odom_topic: /odom/wheels
     bt_loop_duration: 10
     default_server_timeout: 20
@@ -112,9 +112,9 @@ controller_server:
           # Robot
           max_vel_x: 0.3  # 0.1
           max_vel_x_backwards: 0.05
-          max_vel_theta: 4.0  # 15deg more or less
+          max_vel_theta: 2.0  # 15deg more or less
           acc_lim_x: 1.0  # was 1.0
-          acc_lim_theta: 4.0  # was 0.3
+          acc_lim_theta: 1.0  # was 0.3
           min_turning_radius: 0.0 #molto importante, determina se durante la rotazione le ruote possono andare in versi opposti
           footprint_model:
             type: "circular"
@@ -169,7 +169,7 @@ local_costmap:
       update_frequency: 10.0
       publish_frequency: 5.0
       global_frame: rover/odom
-      robot_base_frame: rover/base_link
+      robot_base_frame: rover/base_footprint
       use_sim_time: True
       rolling_window: true
       width: 6
@@ -185,6 +185,7 @@ local_costmap:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
         publish_voxel_map: True
+        footprint_clearing_enabled: True
         origin_z: 0.0
         z_resolution: 0.05
         z_voxels: 16
@@ -196,14 +197,17 @@ local_costmap:
           max_obstacle_height: 2.0
           clearing: True
           marking: True
+          raytrace_range: 3.0 
+          observation_persistence: 0.5
           data_type: "LaserScan"
           raytrace_max_range: 3.0
           raytrace_min_range: 0.0
           obstacle_max_range: 2.5
           obstacle_min_range: 0.0
-      static_layer:
-        plugin: "nav2_costmap_2d::StaticLayer"
-        map_subscribe_transient_local: True
+      # static_layer:
+      #   plugin: "nav2_costmap_2d::StaticLayer"
+      #   subscribe_to_updates: true
+      #   map_subscribe_transient_local: True
       always_send_full_costmap: True
       qos_overrides:
         scan:
@@ -216,29 +220,33 @@ global_costmap:
       update_frequency: 2.0
       publish_frequency: 1.0
       global_frame: rover/map
-      robot_base_frame: rover/base_link
+      robot_base_frame: rover/base_footprint
       use_sim_time: True
       robot_radius: 0.3
       resolution: 0.05
       track_unknown_space: true
-      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      plugins: [ "static_layer", "obstacle_layer", "inflation_layer"]      
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        subscribe_to_updates: true
+        map_subscribe_transient_local: True
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
+        footprint_clearing_enabled: True
         observation_sources: scan
         scan:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
+          raytrace_range: 3.0 
+          observation_persistence: 0.5
           data_type: "LaserScan"
           raytrace_max_range: 3.0
           raytrace_min_range: 0.0
           obstacle_max_range: 2.5
           obstacle_min_range: 0.0
-      static_layer:
-        plugin: "nav2_costmap_2d::StaticLayer"
-        map_subscribe_transient_local: True
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 10.0 
@@ -270,7 +278,7 @@ planner_server:
     use_sim_time: True
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_astar_planner/AStarPlanner" #"nav2_straightline_planner/StraightLine" "nav2_navfn_planner/NavfnPlanner"
+      plugin: "nav2_astar_planner/AStarPlanner" # "nav2_straightline_planner/StraightLine" "nav2_navfn_planner/NavfnPlanner" 
       tolerance: 0.2
       use_astar: false
       allow_unknown: true
@@ -302,13 +310,13 @@ behavior_server:
     assisted_teleop:
       plugin: "nav2_behaviors/AssistedTeleop"
     global_frame: rover/odom
-    robot_base_frame: rover/base_link
+    robot_base_frame: rover/base_footprint
     transform_tolerance: 0.1
     use_sim_time: True
     simulate_ahead_time: 2.0
-    max_rotational_vel: 4.0
+    max_rotational_vel: 2.0
     min_rotational_vel: 0.0
-    rotational_acc_lim: 4.0
+    rotational_acc_lim: 1.0
 
 robot_state_publisher:
   ros__parameters:
@@ -331,10 +339,10 @@ velocity_smoother:
     smoothing_frequency: 10.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
-    max_velocity: [0.3, 0.0, 4.0]
-    min_velocity: [-0.3, 0.0, -4.0]
-    max_accel: [0.1, 0.0, 4.0]
-    max_decel: [-1.0, 0.0, -4.0]
+    max_velocity: [0.3, 0.0, 2.0]
+    min_velocity: [-0.3, 0.0, -2.0]
+    max_accel: [0.1, 0.0, 1.0]
+    max_decel: [-1.0, 0.0, -1.0]
     odom_topic: "odom/wheels"
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]

@@ -36,7 +36,7 @@ std::vector<std::pair<int, int>> AStarPlanner::get_neighbors(int x, int y)
 
 double AStarPlanner::heuristic(int x1, int y1, int x2, int y2)
 {
-  return std::hypot(x1 - x2, y1 - y2);
+  return abs(x1 - x2) + abs(y1 - y2);
 }
 
 nav_msgs::msg::Path AStarPlanner::createPlan(
@@ -68,7 +68,8 @@ nav_msgs::msg::Path AStarPlanner::createPlan(
         costmap_->mapToWorld(current->x, current->y, wx, wy);
         pose.pose.position.x = wx;
         pose.pose.position.y = wy;
-        pose.pose.orientation.w = 1.0;
+        pose.pose.orientation.z = goal.pose.orientation.z;
+        pose.pose.orientation.w = goal.pose.orientation.w;
         pose.header.stamp = node_->now();
         pose.header.frame_id = global_frame_;
         global_path.poses.push_back(pose);
