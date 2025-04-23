@@ -32,14 +32,16 @@ public:
 
 private:
   struct Node {
-    int x, y;
-    double g, h;
-    Node* parent;
+    int x, y; // Node coordinates in the gridmap
+    double g, h; // Costs: g (distance from start), h (heuristic)
+    Node* parent;  // Parent node for path reconstruction
     Node(int x, int y, double g, double h, Node* parent = nullptr)
-      : x(x), y(y), g(g), h(h), parent(parent) {}
-    double f() const { return g + h; }
+      : x(x), y(y), g(g), h(h), parent(parent) {}   // Construction of the node
+    double f() const { return g + h; }   // A* evaluation function (just return g + h)
   };
 
+  // Comparator for the priority queue (min-heap based on f value)
+  //  Note: priority queue automatically order object bas
   struct CompareNodes {
     bool operator()(const Node* a, const Node* b) const {
       return a->f() > b->f();
