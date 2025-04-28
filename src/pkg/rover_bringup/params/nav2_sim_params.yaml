@@ -176,11 +176,14 @@ local_costmap:
       height: 6
       resolution: 0.05
       robot_radius: 0.3
-      plugins: ["voxel_layer", "inflation_layer"]
+      plugins: ["voxel_layer", "gradient_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 10.0 
-        inflation_radius: 0.3 
+        inflation_radius: 0.3
+      gradient_layer:
+        plugin: "costmap_plugin/GradientLayer"
+        gradient_radius: 0.6
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -225,7 +228,7 @@ global_costmap:
       robot_radius: 0.3
       resolution: 0.05
       track_unknown_space: true
-      plugins: [ "static_layer", "obstacle_layer", "inflation_layer"]      
+      plugins: [ "static_layer", "obstacle_layer", "gradient_layer"]      
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         subscribe_to_updates: true
@@ -250,7 +253,10 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 10.0 
-        inflation_radius: 0.4 
+        inflation_radius: 0.4
+      gradient_layer:
+        plugin: "costmap_plugin/GradientLayer"
+        gradient_radius: 0.6
       always_send_full_costmap: True
       qos_overrides:
         scan:
@@ -278,10 +284,10 @@ planner_server:
     use_sim_time: True
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_astar_planner/AStarPlanner" # "nav2_straightline_planner/StraightLine" "nav2_navfn_planner/NavfnPlanner" 
+      plugin: "nav2_navfn_planner/NavfnPlanner"  # "nav2_straightline_planner/StraightLine" "nav2_astar_planner/AStarPlanner"
       tolerance: 0.2
       use_astar: false
-      allow_unknown: true
+      allow_unknown: True
 
 smoother_server:
   ros__parameters:
