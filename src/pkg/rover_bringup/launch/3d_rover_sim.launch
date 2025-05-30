@@ -1,0 +1,11 @@
+<launch>
+
+  <include file="$(find-pkg-share rover_gazebo)/launch/3d_rover_gazebo.launch.py"/>
+ 
+  <include file="$(find-pkg-share rover_bringup)/launch/3d_navigation_sim.launch.py"/>
+  <include file="$(find-pkg-share rover_bringup)/launch/sim_robot_localizer.launch.py"/>
+  <include file="$(find-pkg-share rover_bringup)/launch/sim_rtabmap.launch.py"/>
+  
+ 
+
+</launch>

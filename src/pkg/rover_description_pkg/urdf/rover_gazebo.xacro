@@ -213,7 +213,7 @@
             <ignition_frame_id>rover/camera_depth_optical_frame</ignition_frame_id>
 			<pose>0 0.0175 0.5125 0 -0 0</pose>
 			<camera name="d435">
-                <point_cloud_topic>depth/color/points</point_cloud_topic>
+                <point_cloud_topic>depth/image_raw/points</point_cloud_topic>
                 <camera_info_topic>depth/camera_info</camera_info_topic>
 				<horizontal_fov>1.48702</horizontal_fov>
 				<image>
@@ -233,11 +233,89 @@
 		</sensor>        
     </gazebo>
 
-    <gazebo>    
+    <link name="livox_base">
+        <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <!-- <visual>
+        <origin rpy="0 0 0" xyz="0.00 0 0.0"/>
+        <geometry>
+            <mesh filename="package://gz_migration/meshes/livox_mid40.dae">
+            </mesh>
+        </geometry>
+        </visual> -->
+        <collision>
+            <origin xyz="0.075 0 0.15" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.04" length="0.06"/>
+            </geometry>
+        </collision>
+    </link>
+    <link name="livox">
+        <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+    </link>
+    <joint name="base_link_to_livox" type="fixed">
+        <parent link="base_link"/>
+        <child link="livox_base"/>
+        <origin xyz="0.075 0 0.2" rpy="0 0 0"/>
+    </joint>
+    <joint name="livox_to_livox_base_joint" type="fixed">
+        <parent link="livox_base"/>
+        <child link="livox"/>
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0 "/>
+    </joint>
+    <gazebo reference="livox">
+        <sensor name="laser_livox" type="gpu_lidar">
+        <ignition_frame_id>rover/livox</ignition_frame_id>
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>True</visualize>
+        <update_rate>10</update_rate>
+        <!-- This ray plgin is only for visualization. -->
+        <!--plugin filename="libros2_livox.so" name="livox_plugin"-->
+            <lidar>
+            <scan>
+                <horizontal>
+                    <samples>360</samples>
+                    <resolution>1</resolution>
+                    <min_angle>0</min_angle>
+                    <max_angle>6.28318</max_angle>
+                </horizontal>
+                <vertical>
+                    <samples>360</samples>
+                    <resolution>1</resolution>
+                    <min_angle>-0.12601266555555554</min_angle>
+                    <max_angle>0.9637699988888888</max_angle>
+                </vertical>
+            </scan>
+            <range>
+                <min>0.3</min>
+                <max>100.0</max>
+                <resolution>0.002</resolution>
+            </range>
+            <!-- <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.01</stddev>
+            </noise> -->
+            </lidar>
+            <!--visualize>False</visualize-->
+            <samples>24000</samples>
+            <downsample>1</downsample>
+            <csv_file_name>package://rover_description_pkg/scan_mode/mid360.csv</csv_file_name>
+            <!--ros_topic>${ros_topic}</ros_topic-->
+            <topic>/livox/scan</topic>
+        <!--/plugin-->
+        </sensor>
+    </gazebo>
+    <!-- <gazebo>    
         <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
             <render_engine>ogre2</render_engine>
         </plugin>
-    </gazebo>
+    </gazebo>     -->
 </xacro:macro>
 
     <!-- Gazebo Plugins -->
@@ -263,7 +341,7 @@
             
             <!-- Output -->
             <frame_id>rover/odom</frame_id>
-            <child_frame_id>rover/base_link</child_frame_id>
+            <child_frame_id>rover/base_footprint</child_frame_id>
 
             <!-- Topics -->
             <topic>/cmd_vel</topic>
