@@ -8,18 +8,23 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-sel
 
 #Install essential
 RUN apt-get update && apt-get install -y
-RUN apt-get install software-properties-common dialog apt-utils apt-transport-https curl -y
-RUN apt-get install ros-humble-turtlesim -y
+RUN apt-get install curl -y
+RUN rm -f /usr/share/keyrings/ros-archive-keyring.gpg
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 RUN apt-get install -y lsb-release gnupg
+RUN echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2.listRUN apt-get update
+RUN apt-get update
 RUN sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 RUN apt-get update
+RUN apt-get install software-properties-common dialog apt-utils apt-transport-https -y
 RUN apt-get install -y ignition-fortress
 
 RUN apt-get update && apt-get install -y
 
 ##You may add additional apt-get here
 RUN apt install kmod -y
+RUN apt-get install ros-humble-turtlesim -y
 RUN apt install ros-humble-rviz2 -y
 RUN apt install ros-humble-rqt* -y
 RUN apt install minicom -y
