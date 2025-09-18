@@ -207,11 +207,11 @@
 
 		<sensor name="d435_depth" type="depth_camera">
 			<always_on>1</always_on>
-			<update_rate>10</update_rate>
+			<update_rate>30</update_rate>
 			<visualize>0</visualize>
 			<topic>depth/image_raw</topic>
             <ignition_frame_id>rover/camera_depth_optical_frame</ignition_frame_id>
-			<pose>0 0.0175 0.5125 0 -0 0</pose>
+			<pose>0 0.0 0.0 0 -0 0</pose>
 			<camera name="d435">
                 <point_cloud_topic>depth/image_raw/points</point_cloud_topic>
                 <camera_info_topic>depth/camera_info</camera_info_topic>
@@ -244,13 +244,13 @@
             <mesh filename="package://gz_migration/meshes/livox_mid40.dae">
             </mesh>
         </geometry>
-        </visual> -->
+        </visual>
         <collision>
             <origin xyz="0.075 0 0.15" rpy="0 0 0"/>
             <geometry>
                 <cylinder radius="0.04" length="0.06"/>
             </geometry>
-        </collision>
+        </collision> -->
     </link>
     <link name="livox">
         <inertial>

@@ -80,7 +80,9 @@ def generate_launch_description():
             "-topic", "/robot_description",
             "-name", "prisma_rover",
             "-allow_renaming", "true",
-            "-z", "0.1",
+            "-x", "7.0",
+            "-y", "0.5",
+            "-z", "1.2",
         ]
     )
     

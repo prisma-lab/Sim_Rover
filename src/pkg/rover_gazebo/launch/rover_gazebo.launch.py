@@ -57,7 +57,7 @@ def generate_launch_description():
     
     declare_world_cmd = DeclareLaunchArgument(
         'world',
-        default_value='maze.sdf',
+        default_value='leonardo_race_field.sdf', #maze.sdf
         description='World file to use in Gazebo')
     
     gz_world_arg = PathJoinSubstitution([
@@ -80,7 +80,7 @@ def generate_launch_description():
             "-topic", "/robot_description",
             "-name", "prisma_rover",
             "-allow_renaming", "true",
-            "-z", "0.1",
+            "-z", "0.15",
         ]
     )
     
@@ -98,8 +98,35 @@ def generate_launch_description():
             '/color/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
             '/depth/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
             '/color/image_raw@sensor_msgs/msg/Image@ignition.msgs.Image',
-            '/depth/color/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
+            '/depth/image_raw@sensor_msgs/msg/Image@ignition.msgs.Image',
+            '/depth/image_raw/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
         ],
+        parameters=[{
+            # 'qos_overrides./clock.publisher.reliability': 'best_effort',
+            # 'qos_overrides./cmd_vel.publisher.reliability': 'best_effort',
+            # 'qos_overrides./cmd_vel.subscription.reliability': 'best_effort',
+            # 'qos_overrides./color/camera_info.publisher.reliability': 'best_effort',
+            # 'qos_overrides./color/camera_info.subscription.reliability': 'best_effort',
+            # 'qos_overrides./color/image_raw.publisher.reliability': 'best_effort',
+            # 'qos_overrides./color/image_raw.subscription.reliability': 'best_effort',
+            # 'qos_overrides./depth/camera_info.publisher.reliability': 'best_effort',
+            # 'qos_overrides./depth/camera_info.subscription.reliability': 'best_effort',
+            # 'qos_overrides./depth/image_raw/points.publisher.reliability': 'best_effort',
+            # 'qos_overrides./depth/image_raw/points.subscription.reliability': 'best_effort',
+            # 'qos_overrides./joint_states.publisher.reliability': 'best_effort',            
+            # 'qos_overrides./imu/data.publisher.reliability': 'best_effort',
+            # 'qos_overrides./imu/data.subscription.reliability': 'best_effort',
+            # 'qos_overrides./livox/scan.publisher.reliability': 'best_effort',
+            # 'qos_overrides./livox/scan.subscription.reliability': 'best_effort',
+            # 'qos_overrides./livox/scan/points.publisher.reliability': 'best_effort',
+            # 'qos_overrides./livox/scan/points.subscription.reliability': 'best_effort',
+            # 'qos_overrides./odom/wheels.publisher.reliability': 'best_effort',
+            # 'qos_overrides./odom/wheels.subscription.reliability': 'best_effort',
+            # 'qos_overrides./parameter_events.publisher.reliability': 'best_effort',
+            'qos_overrides./scan.publisher.reliability': 'best_effort',
+            'qos_overrides./scan.subscription.reliability': 'best_effort',
+            # 'qos_overrides./tf.publisher.reliability': 'best_effort'
+        }]
     )
 
     # Robot state publisher

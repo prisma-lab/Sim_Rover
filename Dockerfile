@@ -12,8 +12,8 @@ RUN apt-get install curl -y
 RUN rm -f /usr/share/keyrings/ros-archive-keyring.gpg
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 RUN apt-get install -y lsb-release gnupg
-RUN echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2.list
-RUN apt-get update
+# RUN echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2.list
+# RUN apt-get update
 RUN sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 RUN apt-get update
@@ -74,7 +74,7 @@ RUN apt-get update && apt install ros-humble-tf-transformations -y
 #RUN apt-get update && apt-get install -y ros-humble-ros-gzharmonic -y
 
 #RUN export GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/ros2_iiwa/iiwa_description/gazebo/models
-ENV GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/ros2_iiwa/iiwa_description/gazebo/models
+ENV IGN_GAZEBO_RESOURCE_PATH=/home/user/ros2_ws/install/rover_gazebo/share/rover_gazebo/models
 
 #Environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -82,7 +82,7 @@ ENV DISPLAY=:0
 ENV HOME=/home/user
 ENV ROS_DISTRO=humble
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-ENV ROS_DOMAIN_ID=42
+ENV ROS_DOMAIN_ID=90
 
 #Add non root user using UID and GID passed as argument
 ARG USER_ID

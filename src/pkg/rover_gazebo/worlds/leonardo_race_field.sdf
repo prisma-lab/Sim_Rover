@@ -1,0 +1,193 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="leonardo_race_field">
+      <!-- <plugin 
+    filename="libgz-sim-clock-publisher-system.so"
+    name="gz::sim::systems::ClockPublisher">
+    <publish_frequency>100</publish_frequency>  
+  </plugin> -->
+    <physics name='default_physics' default='0' type='ode'>
+      <gravity>0 0 -9.8066</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>10</iters>
+          <sor>1.3</sor>
+          <use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+      <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+    </physics>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!--<include>
+      <uri>
+      https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane
+      </uri>
+    </include>
+    <include>
+      <uri>
+      https://fuel.gazebosim.org/1.0/OpenRobotics/models/Asphalt Plane
+      </uri>
+    </include>-->
+
+    <include>
+      <name>race_field</name>
+      <pose> 10 5 0.1 0 0 3.14159 </pose>
+      <uri>model://race_field</uri>
+    </include>
+    
+    <!-- Roof -->
+     <include>
+      <name>roof</name>
+      <pose> 10 -5 3.1 3.14159 0 3.14159 </pose>
+      <uri>model://roof</uri>
+    </include>
+
+    <!-- Static Obstacles-->
+    <include>
+      <name>obstacle_03</name>
+      <pose> 2.802 1.684 0.1 0 0 -1.57 </pose>
+      <uri>model://obstacle_03</uri>
+    </include>
+
+    <include>
+      <name>obstacle_03_second</name>
+      <pose> 5 -1.42 0.1 0 0 1.57 </pose>
+      <uri>model://obstacle_03</uri>
+    </include>
+
+    <include>
+      <name>obstacle_09</name>
+      <pose> 5 5 0.1 0 0 3.14159</pose>
+      <uri>model://obstacle_09</uri>
+    </include>
+
+    <include>
+      <name>obstacle_06</name>
+      <pose> 6.847 1.881 0.1 0 0 0</pose>
+      <uri>model://obstacle_06</uri>
+    </include>
+
+    <include>
+      <name>obstacle_10_</name>
+      <pose> 6.70 -3.4 0.10 0 0 3.14159</pose>
+      <uri>model://obstacle_10_</uri>
+    </include>
+
+    <!-- Unknown Obstacles-->
+    <include>
+      <name>unknown_obst_1</name> <!--high tower-->
+      <pose> -1.5 1.5 0.1 0 0 0</pose>
+      <uri>model://unknown_obst_1</uri>
+    </include>
+
+    <include>
+      <name>unknown_obst_2</name> <!--low tower-->
+      <pose> -4.5 1.5 0.1 0 0 0</pose>
+      <uri>model://unknown_obst_2</uri>
+    </include> 
+
+    <model name='Unknown Cubes'>
+      <pose>0 0 0.25 0 0 0</pose>
+      <static>true</static>
+        <link name='cube1'>
+            <pose>-4.5 -2.0 0 0 0 0</pose>
+            <static>true</static>
+            <collision name='cube1_collision'>
+                <geometry>
+                    <box>
+                        <size>0.3 0.3 0.3</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name='cube1_visual'>
+                <geometry>
+                    <box>
+                        <size>0.3 0.3 0.3</size>
+                    </box>
+                </geometry>
+                <material>
+                    <ambient>0.1 0.1 0.1 1</ambient>
+                    <diffuse>0 0.1 0.2 1</diffuse>
+                    <specular>0 0.01 0.05 1</specular>
+                </material>
+            </visual>
+        </link>
+    </model>
+
+    <include>
+      <name>unknown_obst_3 </name> 
+      <pose> -8 0.5 0.1 0 0 0</pose>
+      <uri>model://unknown_obst_3</uri>
+    </include> 
+
+    <include>
+      <name>unknown_tunnel_1 </name>
+      <pose> -3.2 -1.5 0.1 0 0 2.355 </pose>
+      <uri>model://unknown_tunnel_1</uri>
+    </include> 
+
+    <include>
+      <name>unknown_tunnel_2 </name> 
+      <pose> -2 3.5 0.1 0 0 -1.57 </pose>
+      <uri>model://unknown_tunnel_2</uri>
+    </include> 
+
+    <include>
+      <name>start_pod </name> <!--low tower-->
+      <pose> -8.0 1.5 0.1 0 0 0 </pose>
+      <uri>model://start_pod</uri>
+    </include> 
+
+    <!-- Intruders -->
+    <include>
+      <name>intruder_one</name>
+      <pose> 7.5 -0.5 0.1 0 0 0</pose>
+      <uri>model://intruder</uri>
+    </include>
+
+    <include>
+      <name>intruder_two</name>
+      <pose> -0.5 -2.5 0.1 0 0 0</pose>
+      <uri>model://intruder</uri>
+    </include>
+
+    <!-- AR markers -->
+    <!--include>
+      <name>tool_0_tag</name>
+      <uri>model://marker_0</uri>
+      <pose>-1 -0.5 1 0 1.57 0</pose>
+    </include-->
+
+    <plugin name='ignition::gazebo::systems::Physics' filename='ignition-gazebo-physics-system' />
+    <plugin name='ignition::gazebo::systems::UserCommands' filename='ignition-gazebo-user-commands-system' />
+    <plugin name='ignition::gazebo::systems::SceneBroadcaster' filename='ignition-gazebo-scene-broadcaster-system' />
+    <plugin name='ignition::gazebo::systems::Contact' filename='ignition-gazebo-contact-system' />
+
+
+  </world>
+</sdf>
+

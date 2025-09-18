@@ -86,7 +86,7 @@ def launch_setup(context, *args, **kwargs):
         DeclareLaunchArgument('Grid/MaxGroundHeight', default_value='"0.27"', description=''),
         DeclareLaunchArgument('StartNewMapOnLoopClosure', default_value='"true"', description=''),
         DeclareLaunchArgument('Mem/IncrementalMemory', default_value='"false"', description=''),
-        DeclareLaunchArgument('delete_db_on_start', default_value="'true'", description=''),
+        DeclareLaunchArgument('delete_db_on_start', default_value="true", description=''),
         DeclareLaunchArgument('LoopClosureDetection', default_value='"true"', description=''),
         DeclareLaunchArgument('Grid/RayTracing', default_value='"true"', description=''),
         DeclareLaunchArgument('LoopThr', default_value='"0.15"', description=''),
@@ -498,7 +498,7 @@ def generate_launch_description():
         DeclareLaunchArgument('stereo', default_value='false', description='Use stereo input instead of RGB-D.'),
 
         DeclareLaunchArgument('localization', default_value='false', description='Launch in localization mode.'),
-        DeclareLaunchArgument('rtabmap_viz',  default_value='true',  description='Launch RTAB-Map UI (optional).'),
+        DeclareLaunchArgument('rtabmap_viz',  default_value='false',  description='Launch RTAB-Map UI (optional).'),
         DeclareLaunchArgument('rviz',         default_value='false', description='Launch RVIZ (optional).'),
 
         DeclareLaunchArgument('use_sim_time', default_value='true', description='Use simulation (Gazebo) clock if true'),
@@ -561,10 +561,10 @@ def generate_launch_description():
         DeclareLaunchArgument('depth_image_transport', default_value='compressedDepth', description='Depth compatible types: compressedDepth (see "rosrun image_transport list_transports")'),
        
         # LiDAR
-        DeclareLaunchArgument('subscribe_scan',       default_value='false',       description=''),
+        DeclareLaunchArgument('subscribe_scan',       default_value='true',       description=''),
         DeclareLaunchArgument('scan_topic',           default_value='/scan',       description=''),
         DeclareLaunchArgument('subscribe_scan_cloud', default_value='true',       description=''),
-        DeclareLaunchArgument('scan_cloud_topic',     default_value='/livox/scan/points', description=''),
+        DeclareLaunchArgument('scan_cloud_topic',     default_value='/depth/image_raw/points', description=''),
         DeclareLaunchArgument('scan_normal_k',        default_value='0',           description=''),
         
         # Odometry
