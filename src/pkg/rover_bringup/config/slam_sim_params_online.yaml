@@ -12,6 +12,7 @@ slam_toolbox:
     # ROS Parameters
     odom_frame: rover/odom
     map_frame: rover/map
+    map_name: /rover/map
     base_frame: rover/base_footprint
     scan_topic: /scan #/merged_scan
     #use_map_saver: true

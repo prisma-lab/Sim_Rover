@@ -1,16 +1,19 @@
 <launch>
 
-  <include file="$(find-pkg-share rover_gazebo)/launch/rover_gazebo.launch.py"/>
-  <include file="$(find-pkg-share pointcloud_to_laserscan)/launch/sample_pointcloud_to_laserscan_launch.py"/>
-
-
- 
-  <include file="$(find-pkg-share rover_bringup)/launch/navigation_sim.launch.py"/>
-  <include file="$(find-pkg-share rover_bringup)/launch/slam_sim.launch.py"/>
+  <include file="$(find-pkg-share rover_gazebo)/launch/rover_garden.launch.py"/>
 
   <node pkg="tf2_ros" exec="static_transform_publisher" name="map_to_rover_map_tf" 
-      args="10 0 0 0 0 0 map rover/map" />
+    args="2.20 7.78 0 0 0 0 map rover/map" />
   
+ 
+  <include file="$(find-pkg-share rover_bringup)/launch/navigation_sim.launch.py">
+      <arg name="namespace" value="rover"/>
+  </include>
+  <include file="$(find-pkg-share rover_bringup)/launch/slam_sim.launch.py"/>
+
+  <include file="$(find-pkg-share aruco_detector_ocv_ros2)/launch/detector_launch.py"/>
+  <include file="$(find-pkg-share yolov11_ros2)/launch/yolo.launch.py"/>
+  <include file="$(find-pkg-share rover_manager)/launch/manager.launch.py"/>
  
 
 </launch>

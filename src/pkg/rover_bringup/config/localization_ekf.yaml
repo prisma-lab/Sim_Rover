@@ -14,7 +14,7 @@ ekf_filter_node:
         publish_acceleration: false
         reset_on_time_jump: true
 
-        map_frame: map                   # Defaults to "map" if unspecified
+        map_frame: rover/map                   # Defaults to "map" if unspecified
         odom_frame: rover/odom                 # Defaults to "odom" if unspecified
         base_link_frame: rover/base_footprint       # Defaults to "base_link" if unspecified
         world_frame: rover/odom                # Defaults to the value of odom_frame if unspecified

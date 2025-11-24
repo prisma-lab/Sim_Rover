@@ -23,7 +23,8 @@
     </gazebo>
 
     <gazebo>
-        <plugin filename="libignition-gazebo-imu-system" name="ignition::gazebo::systems::Imu"/>
+        <!-- <plugin filename="libignition-gazebo-imu-system" name="ignition::gazebo::systems::Imu"/> -->
+        <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
     </gazebo>
 
 </robot>

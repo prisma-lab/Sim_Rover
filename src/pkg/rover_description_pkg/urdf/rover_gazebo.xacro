@@ -129,7 +129,7 @@
 
 
     <joint name="camera_to_payload" type="fixed">
-        <origin xyz="0.02 0 ${1 -0.129 - total_height}" rpy="0 0 0"/>
+        <origin xyz="0.1 0.0 0.04" rpy="0 0 0"/>
         <parent link="payload_link"/>
         <child link="${camera_base_frame}"/>
     </joint>
@@ -179,11 +179,11 @@
 
     <gazebo reference="${camera_base_frame}">
         <sensor name="d435_color" type="camera">
-            <topic>color/image_raw</topic>
+            <topic>rover/color/image_raw</topic>
             <ignition_frame_id>rover/camera_link</ignition_frame_id>
             <gz_frame_id>rover/camera_link</gz_frame_id>
             <camera name="d435">
-                <camera_info_topic>color/camera_info</camera_info_topic>
+                <camera_info_topic>rover/color/camera_info</camera_info_topic>
                 <horizontal_fov>1.21126</horizontal_fov>
 				<image>
 					<width>640</width>
@@ -209,12 +209,12 @@
 			<always_on>1</always_on>
 			<update_rate>30</update_rate>
 			<visualize>0</visualize>
-			<topic>depth/image_raw</topic>
+			<topic>rover/depth/image_raw</topic>
             <ignition_frame_id>rover/camera_depth_optical_frame</ignition_frame_id>
 			<pose>0 0.0 0.0 0 -0 0</pose>
 			<camera name="d435">
-                <point_cloud_topic>depth/image_raw/points</point_cloud_topic>
-                <camera_info_topic>depth/camera_info</camera_info_topic>
+                <point_cloud_topic>rover/depth/image_raw/points</point_cloud_topic>
+                <camera_info_topic>rover/depth/camera_info</camera_info_topic>
 				<horizontal_fov>1.48702</horizontal_fov>
 				<image>
 					<width>1280</width>
@@ -268,14 +268,13 @@
         <child link="livox"/>
         <origin rpy="0 0 0" xyz="0.0 0.0 0.0 "/>
     </joint>
-    <gazebo reference="livox">
+    <!-- <gazebo reference="livox">
         <sensor name="laser_livox" type="gpu_lidar">
         <ignition_frame_id>rover/livox</ignition_frame_id>
         <pose>0 0 0 0 0 0</pose>
         <visualize>True</visualize>
         <update_rate>10</update_rate>
-        <!-- This ray plgin is only for visualization. -->
-        <!--plugin filename="libros2_livox.so" name="livox_plugin"-->
+        <plugin filename="libros2_livox.so" name="livox_plugin">
             <lidar>
             <scan>
                 <horizontal>
@@ -296,21 +295,14 @@
                 <max>100.0</max>
                 <resolution>0.002</resolution>
             </range>
-            <!-- <noise>
-                <type>gaussian</type>
-                <mean>0.0</mean>
-                <stddev>0.01</stddev>
-            </noise> -->
             </lidar>
-            <!--visualize>False</visualize-->
             <samples>24000</samples>
             <downsample>1</downsample>
             <csv_file_name>package://rover_description_pkg/scan_mode/mid360.csv</csv_file_name>
-            <!--ros_topic>${ros_topic}</ros_topic-->
             <topic>/livox/scan</topic>
-        <!--/plugin-->
+        </plugin>
         </sensor>
-    </gazebo>
+    </gazebo> -->
     <!-- <gazebo>    
         <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
             <render_engine>ogre2</render_engine>
@@ -322,7 +314,8 @@
 <xacro:macro name="gazebo_diff_drive_controller" params="left_joint right_joint">
 
     <gazebo>
-        <plugin name="ignition::gazebo::systems::DiffDrive" filename="ignition-gazebo-diff-drive-system"> 
+        <!-- <plugin name="ignition::gazebo::systems::DiffDrive" filename="ignition-gazebo-diff-drive-system">  -->
+        <plugin name="gz::sim::systems::DiffDrive" filename="gz-sim-diff-drive-system">
             <num_wheel_pairs>2</num_wheel_pairs>
             <!-- Wheel Information -->
             <left_joint>rl_wheel_to_base</left_joint>
@@ -344,13 +337,14 @@
             <child_frame_id>rover/base_footprint</child_frame_id>
 
             <!-- Topics -->
-            <topic>/cmd_vel</topic>
+            <topic>/rover/cmd_vel</topic>
             <odom_topic>/odom/wheels</odom_topic>
-            <tf_topic>/tf_gazebo</tf_topic>
+            <!-- <tf_topic>/tf</tf_topic> -->
 
         </plugin>
 
-        <plugin filename="ignition-gazebo-joint-state-publisher-system" name="ignition::gazebo::systems::JointStatePublisher">
+        <!-- <plugin filename="ignition-gazebo-joint-state-publisher-system" name="ignition::gazebo::systems::JointStatePublisher"> -->
+        <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">            
             <topic>/joint_states</topic>
         </plugin>      
 

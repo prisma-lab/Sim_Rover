@@ -8,23 +8,18 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-sel
 
 #Install essential
 RUN apt-get update && apt-get install -y
-RUN apt-get install curl -y
-RUN rm -f /usr/share/keyrings/ros-archive-keyring.gpg
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+RUN apt-get install software-properties-common dialog apt-utils apt-transport-https curl -y
+RUN apt-get install ros-humble-turtlesim -y
 RUN apt-get install -y lsb-release gnupg
-# RUN echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2.list
-# RUN apt-get update
 RUN sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 RUN apt-get update
-RUN apt-get install software-properties-common dialog apt-utils apt-transport-https -y
-RUN apt-get install -y ignition-fortress
+# RUN apt-get install -y ignition-fortress
 
 RUN apt-get update && apt-get install -y
 
 ##You may add additional apt-get here
 RUN apt install kmod -y
-RUN apt-get install ros-humble-turtlesim -y
 RUN apt install ros-humble-rviz2 -y
 RUN apt install ros-humble-rqt* -y
 RUN apt install minicom -y
@@ -36,8 +31,11 @@ RUN apt install ros-humble-navigation2 -y
 RUN apt install ros-humble-nav2-bringup -y
 RUN apt install ros-humble-slam-toolbox -y
 RUN apt install ros-humble-turtlebot3-gazebo -y
+RUN apt install ros-humble-vision-opencv -y
 RUN apt install ros-humble-rmw-cyclonedds-cpp -y
 RUN apt install ros-humble-joint-state-publisher-gui -y
+
+RUN apt-get update && apt-get install -y
 RUN apt install ros-humble-rtabmap -y
 RUN apt install ros-humble-rtabmap-ros -y
 RUN apt install ros-humble-rviz-visual-tools -y
@@ -69,11 +67,21 @@ RUN apt-get install ros-humble-robot-localization -y
 
 RUN apt-get update && apt-get install -y
 RUN sudo apt install pip -y
-RUN pip3 install opencv-python opencv-contrib-python transforms3d
+RUN pip3 install opencv-python opencv-contrib-python
+RUN pip3 install --upgrade transforms3d
 RUN apt-get update && apt install ros-humble-tf-transformations -y
-#RUN apt-get update && apt-get install -y ros-humble-ros-gzharmonic -y
+RUN pip3 install --no-cache-dir Cython
 
-#RUN export GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/ros2_iiwa/iiwa_description/gazebo/models
+RUN pip3 install --no-cache-dir lapx ultralytics open3d pyrealsense2 ros2-numpy shapely scikit-learn openvino-dev
+
+RUN pip3 install -q -U google-generativeai
+
+RUN pip3 install "numpy<2.0"
+
+#RUN apt-get update && apt-get install -y ros-humble-ros-gzharmonic -y
+RUN apt-get update
+RUN apt-get install gz-garden -y
+RUN apt-get install ros-humble-ros-gz -y
 ENV IGN_GAZEBO_RESOURCE_PATH=/home/user/ros2_ws/install/rover_gazebo/share/rover_gazebo/models
 
 #Environment variables
@@ -125,7 +133,16 @@ RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash;" >>  ${HOME}/.bashrc
 RUN echo "source ${HOME}/ros2_ws/install/local_setup.bash;" >>  ${HOME}/.bashrc
 
 
+
+
 #Clean image
 USER root
+# Additional packages
+RUN apt update && apt install -y --no-install-recommends \    
+    aptitude \
+    tmux \
+    tmuxp 
+
+# COPY tmux.conf .tmux.conf
 RUN rm -rf /var/lib/apt/lists/*
 USER user
